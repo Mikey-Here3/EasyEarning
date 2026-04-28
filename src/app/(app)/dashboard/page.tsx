@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import BottomNav from "@/components/BottomNav";
+import LiveTicker from "@/components/LiveTicker";
 import { useSidebar } from "../layout";
 import Link from "next/link";
 
@@ -51,7 +52,8 @@ export default function DashboardPage() {
   return (
     <>
       <Header onMenuClick={open} />
-      <main className="pt-20 px-6 flex flex-col gap-6 pb-28 stagger-children">
+      <div className="pt-16"><LiveTicker /></div>
+      <main className="pt-4 px-6 flex flex-col gap-6 pb-28 stagger-children">
         {/* User Header */}
         <section className="bg-gradient-to-br from-primary-container to-primary-fixed rounded-lg p-6 neu-convex flex items-center gap-4">
           <div className="w-14 h-14 rounded-full bg-surface neu-convex flex items-center justify-center border-2 border-primary-fixed-dim overflow-hidden">
@@ -72,8 +74,8 @@ export default function DashboardPage() {
         <section className="bg-surface rounded-lg p-6 neu-convex flex flex-col items-center justify-center text-center">
           <span className="text-body-md text-on-surface-variant mb-2">Total Account Balance</span>
           <div className="text-display text-primary flex items-baseline gap-1">
-            <span className="text-headline-md">Rs.</span>
-            {user.balance.toLocaleString("en-PK", { minimumFractionDigits: 2 })}
+            <span className="text-headline-md">$</span>
+            {user.balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </div>
         </section>
 
@@ -131,12 +133,12 @@ export default function DashboardPage() {
           <div className="bg-surface p-5 rounded-lg neu-convex flex flex-col">
             <span className="material-symbols-outlined text-primary mb-2" style={{ fontVariationSettings: "'FILL' 1" }}>savings</span>
             <span className="text-body-md text-on-surface-variant text-[12px]">Total Deposits</span>
-            <span className="text-headline-md text-on-surface mt-1">Rs. {totalDeposits.toLocaleString()}</span>
+            <span className="text-headline-md text-on-surface mt-1">$ {totalDeposits.toLocaleString()}</span>
           </div>
           <div className="bg-surface p-5 rounded-lg neu-convex flex flex-col">
             <span className="material-symbols-outlined text-secondary mb-2" style={{ fontVariationSettings: "'FILL' 1" }}>payments</span>
             <span className="text-body-md text-on-surface-variant text-[12px]">Total Withdrawals</span>
-            <span className="text-headline-md text-on-surface mt-1">Rs. {totalWithdrawals.toLocaleString()}</span>
+            <span className="text-headline-md text-on-surface mt-1">$ {totalWithdrawals.toLocaleString()}</span>
           </div>
         </section>
       </main>

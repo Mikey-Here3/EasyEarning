@@ -13,6 +13,7 @@ export async function GET() {
     select: {
       id: true, name: true, email: true, phone: true, balance: true,
       refCode: true, referredBy: true, role: true, createdAt: true,
+      status: true, penaltyAmount: true,
       _count: { select: { deposits: true, withdrawals: true, userPlans: true } },
     },
     orderBy: { createdAt: "desc" },

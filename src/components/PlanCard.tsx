@@ -39,7 +39,7 @@ export default function PlanCard({ plan, onBuy, featured = false }: PlanCardProp
         >
           <span className="text-xs font-bold uppercase opacity-80 mb-0.5">Price</span>
           <span className="text-display text-xl leading-none font-black">
-            {plan.price}<span className="text-sm ml-1">Rs</span>
+            {plan.price}<span className="text-sm ml-1">$</span>
           </span>
         </div>
       </div>
@@ -52,7 +52,7 @@ export default function PlanCard({ plan, onBuy, featured = false }: PlanCardProp
         >
           <span className={`material-symbols-outlined ${accentColor} mb-1 text-xl`}>trending_up</span>
           <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Daily Profit</span>
-          <span className="text-headline-md text-sm text-slate-800 mt-1">{plan.dailyProfit} Rs</span>
+          <span className="text-headline-md text-sm text-slate-800 mt-1">${plan.dailyProfit}</span>
         </div>
         <div
           className="flex flex-col items-center p-3 rounded-2xl bg-neu-bg"
@@ -68,7 +68,7 @@ export default function PlanCard({ plan, onBuy, featured = false }: PlanCardProp
         >
           <span className={`material-symbols-outlined ${accentColor} mb-1 text-xl`}>account_balance</span>
           <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Total Profit</span>
-          <span className="text-headline-md text-sm text-slate-800 mt-1">{plan.totalProfit} Rs</span>
+          <span className="text-headline-md text-sm text-slate-800 mt-1">${plan.totalProfit}</span>
         </div>
         <div
           className="flex flex-col items-center p-3 rounded-2xl bg-neu-bg"

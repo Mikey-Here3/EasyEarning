@@ -27,7 +27,7 @@ export default function AdminBonusPage() {
       body: JSON.stringify({ bonusAmount, bonusDescription: bonusDescription || "Admin bonus" }),
     });
     setSaving(false);
-    setSuccess(`Rs. ${parseFloat(bonusAmount).toLocaleString()} bonus added to ${selectedUser.name}`);
+    setSuccess(`$ ${parseFloat(bonusAmount).toLocaleString()} bonus added to ${selectedUser.name}`);
     setBonusAmount("");
     setBonusDescription("");
     setSelectedUser(null);
@@ -56,7 +56,7 @@ export default function AdminBonusPage() {
               <button key={u.id} onClick={() => setSelectedUser(u)}
                 className={`w-full text-left p-3 rounded-xl transition-colors flex items-center justify-between ${selectedUser?.id === u.id ? "bg-amber-500/20 border border-amber-500/30" : "bg-slate-700/50 hover:bg-slate-700 border border-transparent"}`}>
                 <div><p className="text-white font-medium text-sm">{u.name}</p><p className="text-slate-400 text-xs">{u.email}</p></div>
-                <div className="text-right"><p className="text-amber-400 font-semibold text-sm">Rs. {u.balance.toLocaleString()}</p><p className="text-slate-500 text-xs">{u.refCode}</p></div>
+                <div className="text-right"><p className="text-amber-400 font-semibold text-sm">$ {u.balance.toLocaleString()}</p><p className="text-slate-500 text-xs">{u.refCode}</p></div>
               </button>
             ))}
           </div>
@@ -70,9 +70,9 @@ export default function AdminBonusPage() {
               <div className="bg-slate-700/50 p-4 rounded-xl">
                 <p className="text-white font-semibold">{selectedUser.name}</p>
                 <p className="text-slate-400 text-sm">{selectedUser.email}</p>
-                <p className="text-amber-400 font-bold mt-2">Current Balance: Rs. {selectedUser.balance.toLocaleString()}</p>
+                <p className="text-amber-400 font-bold mt-2">Current Balance: $ {selectedUser.balance.toLocaleString()}</p>
               </div>
-              <div className="flex flex-col gap-1"><label className="text-xs text-slate-400 font-medium uppercase">Bonus Amount (Rs.)</label>
+              <div className="flex flex-col gap-1"><label className="text-xs text-slate-400 font-medium uppercase">Bonus Amount ($)</label>
                 <input type="number" value={bonusAmount} onChange={(e) => setBonusAmount(e.target.value)} placeholder="1000"
                   className="bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white text-sm focus:ring-2 focus:ring-amber-500 outline-none" /></div>
               <div className="flex flex-col gap-1"><label className="text-xs text-slate-400 font-medium uppercase">Description</label>

@@ -1,13 +1,30 @@
 "use client";
 
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
+import { useSession, signOut } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
 
 const SidebarContext = createContext<{ open: () => void }>({ open: () => {} });
 export const useSidebar = () => useContext(SidebarContext);
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "loading" || !session?.user) return;
+
+    const userStatus = (session.user as any).status;
+
+    if (userStatus === "BANNED") {
+      signOut({ callbackUrl: "/login" });
+    } else if (userStatus === "RESTRICTED" && pathname !== "/penalty") {
+      router.push("/penalty");
+    }
+  }, [session, status, pathname, router]);
 
   return (
     <SidebarContext.Provider value={{ open: () => setSidebarOpen(true) }}>

@@ -23,14 +23,14 @@ function PaymentMethodContent() {
           <div className="bg-primary-container/20 p-3 rounded-lg flex items-center gap-3">
             <span className="material-symbols-outlined text-primary">info</span>
             <span className="text-body-md text-on-primary-container">
-              Amount to Deposit: <strong>Rs. {parseInt(amount).toLocaleString()}</strong>
+              Amount to Deposit: <strong>$ {parseInt(amount).toLocaleString()}</strong>
             </span>
           </div>
         )}
 
         {/* Payment Methods */}
         <section className="flex flex-col gap-4">
-          {/* Easypaisa - Selected */}
+          {/* Crypto TRC20 - Primary */}
           <button
             onClick={() => router.push(`/deposit?amount=${amount || ""}`)}
             className="relative w-full rounded-2xl bg-surface p-6 flex flex-col items-center justify-center gap-4 transition-all border-2 border-primary-container"
@@ -40,48 +40,19 @@ function PaymentMethodContent() {
               <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
             </div>
             <div className="w-24 h-24 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden mb-2 neu-convex">
-              <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white font-black text-lg">EP</div>
+              <div className="w-full h-full bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center text-white font-black text-lg">USDT</div>
             </div>
             <div className="flex flex-col items-center gap-1">
-              <span className="text-headline-md text-on-surface">Easypaisa</span>
-              <span className="text-body-md text-on-surface-variant">Instant Transfer</span>
+              <span className="text-headline-md text-on-surface">Crypto TRC20</span>
+              <span className="text-body-md text-on-surface-variant">USDT / Crypto Wallet</span>
             </div>
           </button>
 
-          {/* JazzCash */}
-          <button
-            onClick={() => router.push(`/deposit?amount=${amount || ""}`)}
-            className="w-full rounded-2xl bg-surface p-6 flex flex-row items-center gap-4 transition-all neu-convex active:scale-95"
-          >
-            <div className="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden">
-              <div className="w-full h-full bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center text-white font-bold text-sm">JC</div>
-            </div>
-            <div className="flex flex-col items-start gap-1 flex-1">
-              <span className="text-body-lg font-semibold text-on-surface">JazzCash</span>
-              <span className="text-body-md text-on-surface-variant">Mobile Wallet</span>
-            </div>
-            <span className="material-symbols-outlined text-outline-variant">chevron_right</span>
-          </button>
-
-          {/* Bank Transfer */}
-          <button
-            onClick={() => router.push(`/deposit?amount=${amount || ""}`)}
-            className="w-full rounded-2xl bg-surface p-6 flex flex-row items-center gap-4 transition-all neu-convex active:scale-95"
-          >
-            <div className="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-primary">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>account_balance</span>
-            </div>
-            <div className="flex flex-col items-start gap-1 flex-1">
-              <span className="text-body-lg font-semibold text-on-surface">Bank Transfer</span>
-              <span className="text-body-md text-on-surface-variant">1-2 Business Days</span>
-            </div>
-            <span className="material-symbols-outlined text-outline-variant">chevron_right</span>
-          </button>
         </section>
 
         <div className="flex-1" />
 
-        {/* Security Note */}
+        {/* Deposit Button */}
         <section className="mt-10">
           <button
             onClick={() => router.push(`/deposit?amount=${amount || ""}`)}

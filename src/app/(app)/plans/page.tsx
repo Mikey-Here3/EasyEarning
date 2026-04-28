@@ -34,7 +34,7 @@ export default function PlansPage() {
 
   const handleBuy = async (plan: Plan) => {
     if (balance >= plan.price) {
-      if (!confirm(`You have Rs. ${balance} in your wallet. Buy ${plan.name} for Rs. ${plan.price}?`)) return;
+      if (!confirm(`You have $ ${balance} in your wallet. Buy ${plan.name} for $ ${plan.price}?`)) return;
       
       setPurchasing(plan.id);
       const res = await fetch("/api/plans/purchase", {
@@ -68,7 +68,7 @@ export default function PlansPage() {
           </div>
           <div className="text-right">
             <span className="text-xs text-slate-500 font-bold block">WALLET</span>
-            <span className="text-lg font-black text-amber-500">Rs. {balance.toLocaleString()}</span>
+            <span className="text-lg font-black text-amber-500">$ {balance.toLocaleString()}</span>
           </div>
         </div>
 

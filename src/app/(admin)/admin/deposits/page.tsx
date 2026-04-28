@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 interface Deposit {
-  id: string; amount: number; tid: string; status: string; createdAt: string; adminNote: string | null;
+  id: string; amount: number; tid: string; status: string; createdAt: string; adminNote: string | null; proofUrl: string | null;
   user: { name: string; email: string; refCode: string };
   account: { name: string; number: string; method: string };
 }
@@ -54,10 +54,18 @@ export default function AdminDepositsPage() {
                 </div>
                 <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase ${statusColors[d.status] || ""}`}>{d.status}</span>
               </div>
-              <div className="grid grid-cols-3 gap-4 text-sm mb-4">
-                <div><span className="text-slate-400">Amount</span><p className="text-amber-400 font-bold text-lg">Rs. {d.amount.toLocaleString()}</p></div>
+              <div className="grid grid-cols-4 gap-4 text-sm mb-4">
+                <div><span className="text-slate-400">Amount</span><p className="text-amber-400 font-bold text-lg">$ {d.amount.toLocaleString()}</p></div>
                 <div><span className="text-slate-400">TID</span><p className="text-white font-mono">{d.tid}</p></div>
-                <div><span className="text-slate-400">To Account</span><p className="text-white">{d.account.name} ({d.account.method})</p></div>
+                <div><span className="text-slate-400">To Account</span><p className="text-white">{d.account?.name || "Deleted Account"} ({d.account?.method || "N/A"})</p></div>
+                <div>
+                  <span className="text-slate-400">Proof</span>
+                  {d.proofUrl ? (
+                    <a href={d.proofUrl} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline block break-all">View Proof</a>
+                  ) : (
+                    <p className="text-slate-500">N/A</p>
+                  )}
+                </div>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-xs text-slate-500">{new Date(d.createdAt).toLocaleString()}</span>

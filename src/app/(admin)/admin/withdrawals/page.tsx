@@ -48,11 +48,11 @@ export default function AdminWithdrawalsPage() {
           {filtered.map((w) => (
             <div key={w.id} className="bg-slate-800 border border-slate-700 rounded-2xl p-6">
               <div className="flex items-start justify-between mb-4">
-                <div><p className="text-white font-semibold">{w.user.name}</p><p className="text-slate-400 text-xs">{w.user.email} • Balance: Rs. {w.user.balance.toLocaleString()}</p></div>
+                <div><p className="text-white font-semibold">{w.user.name}</p><p className="text-slate-400 text-xs">{w.user.email} • Balance: $ {w.user.balance.toLocaleString()}</p></div>
                 <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase ${statusColors[w.status] || ""}`}>{w.status}</span>
               </div>
               <div className="grid grid-cols-3 gap-4 text-sm mb-4">
-                <div><span className="text-slate-400">Amount</span><p className="text-red-400 font-bold text-lg">Rs. {w.amount.toLocaleString()}</p></div>
+                <div><span className="text-slate-400">Amount</span><p className="text-red-400 font-bold text-lg">$ {w.amount.toLocaleString()}</p></div>
                 <div><span className="text-slate-400">Method</span><p className="text-white">{w.method}</p></div>
                 <div><span className="text-slate-400">Account</span><p className="text-white">{w.accountName}<br /><span className="text-slate-400">{w.accountNumber}</span></p></div>
               </div>

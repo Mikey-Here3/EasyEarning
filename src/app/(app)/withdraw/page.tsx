@@ -11,7 +11,7 @@ export default function WithdrawPage() {
   const [hasDeposited, setHasDeposited] = useState(false);
   const [hasActivePlan, setHasActivePlan] = useState(false);
   const [amount, setAmount] = useState("");
-  const [method, setMethod] = useState("EASYPAISA");
+  const [method, setMethod] = useState("CRYPTO_TRC20");
   const [accountName, setAccountName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [loading, setLoading] = useState(false);
@@ -53,7 +53,7 @@ export default function WithdrawPage() {
 
         <section className="bg-surface rounded-lg p-6 neu-convex flex flex-col items-center text-center">
           <span className="text-label-caps text-on-surface-variant mb-2">Available Balance</span>
-          <h2 className="text-display text-primary">Rs. {balance.toLocaleString("en-PK", { minimumFractionDigits: 2 })}</h2>
+          <h2 className="text-display text-primary">$ {balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}</h2>
         </section>
 
         {!hasDeposited && (
@@ -74,7 +74,7 @@ export default function WithdrawPage() {
           <div className="bg-green-100 p-4 rounded-2xl flex items-center gap-3 neu-convex animate-fade-in">
             <span className="material-symbols-outlined text-green-600" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
             <div><span className="text-body-lg font-semibold text-green-800">Withdrawal Requested!</span><br />
-            <span className="text-body-md text-green-700">Processing within 24 hours.</span></div>
+            <span className="text-body-md text-green-700">Processing within 24 hours</span></div>
           </div>
         )}
 
@@ -83,7 +83,7 @@ export default function WithdrawPage() {
             <div className="space-y-2"><label className="text-label-caps text-on-surface ml-2">Method</label>
               <select value={method} onChange={(e) => setMethod(e.target.value)}
                 className="w-full bg-neu-bg rounded-xl py-4 px-4 text-body-lg appearance-none neu-convex focus:ring-2 focus:ring-primary-container outline-none">
-                <option value="EASYPAISA">Easypaisa</option><option value="JAZZCASH">JazzCash</option><option value="BANK">Bank Transfer</option>
+                <option value="CRYPTO_TRC20">Crypto USDT (TRC20)</option>
               </select>
             </div>
             <div className="space-y-2"><label className="text-label-caps text-on-surface ml-2">Account Name</label>
@@ -94,11 +94,11 @@ export default function WithdrawPage() {
               <input type="text" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} placeholder="03001234567"
                 className="w-full bg-neu-bg rounded-xl py-4 px-4 text-body-lg neu-concave focus:ring-2 focus:ring-primary-container outline-none" />
             </div>
-            <div className="space-y-2"><label className="text-label-caps text-on-surface ml-2">Amount (Rs.)</label>
-              <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Min Rs. 500"
+            <div className="space-y-2"><label className="text-label-caps text-on-surface ml-2">Amount (USDT)</label>
+              <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Min $ 50"
                 className="w-full bg-neu-bg rounded-xl py-4 px-4 text-body-lg neu-concave focus:ring-2 focus:ring-primary-container outline-none" />
             </div>
-            <button onClick={handleWithdraw} disabled={!amount || parseFloat(amount) < 500 || !accountName || !accountNumber || loading}
+            <button onClick={handleWithdraw} disabled={!amount || parseFloat(amount) < 50 || !accountName || !accountNumber || loading}
               className="w-full py-4 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-900 font-bold uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50 mt-4"
               style={{ boxShadow: "5px 5px 15px #D1D9E6, -5px -5px 15px #FFFFFF" }}>
               {loading ? "Processing..." : "Request Withdrawal"}
@@ -111,7 +111,7 @@ export default function WithdrawPage() {
             <span className="material-symbols-outlined text-secondary text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>info</span>Important Notes
           </h3>
           <ul className="text-body-md text-on-surface-variant space-y-2 pl-2">
-            <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Minimum withdrawal: Rs. 500</li>
+            <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Minimum withdrawal: $ 50</li>
             <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Processing within 24 hours</li>
             <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Must have deposit + active plan</li>
           </ul>

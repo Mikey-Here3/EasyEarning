@@ -15,7 +15,7 @@ export default function BalanceCard({ label, amount, showTrend = false, trendTex
     >
       <span className="text-label-caps text-on-surface-variant mb-2">{label}</span>
       <h2 className="text-display text-primary">
-        Rs. {amount.toLocaleString("en-PK", { minimumFractionDigits: 2 })}
+        $ {amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
       </h2>
       {showTrend && trendText && (
         <div

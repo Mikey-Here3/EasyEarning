@@ -19,8 +19,8 @@ export default async function AdminDashboard() {
   const stats = [
     { label: "Total Users", value: users.toString(), icon: "group", color: "text-blue-400", bg: "bg-blue-500/10" },
     { label: "Active Plans", value: plans.toString(), icon: "payments", color: "text-amber-400", bg: "bg-amber-500/10" },
-    { label: "Total Deposits", value: `Rs. ${(deposits._sum.amount || 0).toLocaleString()}`, icon: "savings", color: "text-green-400", bg: "bg-green-500/10" },
-    { label: "Total Withdrawals", value: `Rs. ${(withdrawals._sum.amount || 0).toLocaleString()}`, icon: "outbox", color: "text-red-400", bg: "bg-red-500/10" },
+    { label: "Total Deposits", value: `$ ${(deposits._sum.amount || 0).toLocaleString()}`, icon: "savings", color: "text-green-400", bg: "bg-green-500/10" },
+    { label: "Total Withdrawals", value: `$ ${(withdrawals._sum.amount || 0).toLocaleString()}`, icon: "outbox", color: "text-red-400", bg: "bg-red-500/10" },
     { label: "Pending Deposits", value: pendingDeposits.toString(), icon: "pending", color: "text-orange-400", bg: "bg-orange-500/10" },
     { label: "Pending Withdrawals", value: pendingWithdrawals.toString(), icon: "schedule", color: "text-purple-400", bg: "bg-purple-500/10" },
   ];

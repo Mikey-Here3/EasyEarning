@@ -53,9 +53,9 @@ export default function LandingPage() {
             <div className="flex justify-between items-start">
               <div className="flex flex-col gap-1">
                 <span className="text-label-caps text-tertiary tracking-widest">Starter Plan</span>
-                <span className="text-display text-on-background tracking-tighter">Rs. 275</span>
+                <span className="text-display text-on-background tracking-tighter">$ 275</span>
                 <span className="text-body-md text-on-surface-variant flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[16px]">schedule</span> Daily Rs. 15 for 30 Days
+                  <span className="material-symbols-outlined text-[16px]">schedule</span> Daily $ 15 for 30 Days
                 </span>
               </div>
               <div className="w-12 h-12 rounded-full bg-surface neu-concave-sm flex items-center justify-center text-primary">
@@ -73,9 +73,9 @@ export default function LandingPage() {
                   <span className="text-label-caps text-primary tracking-widest">Premium Plan</span>
                   <span className="bg-primary-container text-on-primary-container text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Popular</span>
                 </div>
-                <span className="text-[40px] leading-tight font-black text-on-background tracking-tighter">Rs. 2,500</span>
+                <span className="text-[40px] leading-tight font-black text-on-background tracking-tighter">$ 2,500</span>
                 <span className="text-body-md text-on-surface-variant flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[16px] text-primary">schedule</span> Daily Rs. 150 for 60 Days
+                  <span className="material-symbols-outlined text-[16px] text-primary">schedule</span> Daily $ 150 for 60 Days
                 </span>
               </div>
               <div className="w-14 h-14 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container" style={{ boxShadow: "inset 2px 2px 4px rgba(255,255,255,0.5), inset -2px -2px 4px rgba(0,0,0,0.1)" }}>

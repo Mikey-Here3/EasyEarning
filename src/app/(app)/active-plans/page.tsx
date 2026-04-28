@@ -65,9 +65,9 @@ export default function ActivePlansPage() {
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-3">
-                    <div className="flex flex-col items-center p-2 rounded-xl bg-neu-bg neu-concave-sm"><span className="text-[10px] text-slate-500 font-bold uppercase">Daily</span><span className="text-body-lg font-semibold text-slate-800">Rs. {up.plan.dailyProfit}</span></div>
-                    <div className="flex flex-col items-center p-2 rounded-xl bg-neu-bg neu-concave-sm"><span className="text-[10px] text-slate-500 font-bold uppercase">Total</span><span className="text-body-lg font-semibold text-slate-800">Rs. {up.plan.totalProfit}</span></div>
-                    <div className="flex flex-col items-center p-2 rounded-xl bg-neu-bg neu-concave-sm"><span className="text-[10px] text-slate-500 font-bold uppercase">Invested</span><span className="text-body-lg font-semibold text-slate-800">Rs. {up.plan.price}</span></div>
+                    <div className="flex flex-col items-center p-2 rounded-xl bg-neu-bg neu-concave-sm"><span className="text-[10px] text-slate-500 font-bold uppercase">Daily</span><span className="text-body-lg font-semibold text-slate-800">$ {up.plan.dailyProfit}</span></div>
+                    <div className="flex flex-col items-center p-2 rounded-xl bg-neu-bg neu-concave-sm"><span className="text-[10px] text-slate-500 font-bold uppercase">Total</span><span className="text-body-lg font-semibold text-slate-800">$ {up.plan.totalProfit}</span></div>
+                    <div className="flex flex-col items-center p-2 rounded-xl bg-neu-bg neu-concave-sm"><span className="text-[10px] text-slate-500 font-bold uppercase">Invested</span><span className="text-body-lg font-semibold text-slate-800">$ {up.plan.price}</span></div>
                   </div>
                 </div>
               );

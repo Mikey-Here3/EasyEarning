@@ -30,7 +30,7 @@ export default function ReferralPage() {
           <h1 className="text-headline-lg text-on-background">My Team</h1>
           <div className="bg-surface rounded-xl w-full p-6 flex flex-col items-center gap-2 mt-4 neu-convex-lg">
             <span className="text-label-caps text-on-surface-variant">Total Commission</span>
-            <span className="text-display text-primary">Rs. {totalCommission.toLocaleString()}</span>
+            <span className="text-display text-primary">$ {totalCommission.toLocaleString()}</span>
           </div>
         </section>
         <section className="flex flex-col gap-4">
@@ -70,7 +70,7 @@ export default function ReferralPage() {
           </div>
           <div className="bg-surface p-4 rounded-lg neu-convex flex flex-col items-center text-center gap-2">
             <span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>account_balance_wallet</span>
-            <span className="text-[24px] font-bold text-on-background">Rs. {totalCommission.toLocaleString()}</span>
+            <span className="text-[24px] font-bold text-on-background">$ {totalCommission.toLocaleString()}</span>
             <span className="text-label-caps text-on-surface-variant">Earned</span>
           </div>
         </section>

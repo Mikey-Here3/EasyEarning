@@ -23,12 +23,18 @@ export const authOptions: NextAuthOptions = {
         const isValid = await bcrypt.compare(credentials.password, user.password);
         if (!isValid) return null;
 
+        if (user.status === "BANNED") {
+          throw new Error("Your account has been banned.");
+        }
+
         return {
           id: user.id,
           email: user.email,
           name: user.name,
           role: user.role,
           refCode: user.refCode,
+          status: user.status,
+          penaltyAmount: user.penaltyAmount,
         };
       },
     }),
@@ -43,14 +49,18 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.role = (user as any).role;
         token.refCode = (user as any).refCode;
+        token.status = (user as any).status;
+        token.penaltyAmount = (user as any).penaltyAmount;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as { id: string }).id = token.id as string;
-        (session.user as { role: string }).role = token.role as string;
-        (session.user as { refCode: string }).refCode = token.refCode as string;
+        (session.user as any).id = token.id as string;
+        (session.user as any).role = token.role as string;
+        (session.user as any).refCode = token.refCode as string;
+        (session.user as any).status = token.status as string;
+        (session.user as any).penaltyAmount = token.penaltyAmount as number;
       }
       return session;
     },

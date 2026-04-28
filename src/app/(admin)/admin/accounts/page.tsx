@@ -10,7 +10,7 @@ export default function AdminAccountsPage() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ name: "", number: "", method: "EASYPAISA", priority: "5" });
+  const [form, setForm] = useState({ name: "", number: "", method: "CRYPTO_TRC20", priority: "5" });
   const [saving, setSaving] = useState(false);
 
   const load = () => fetch("/api/deposit-accounts").then(r => r.json()).then(data => {
@@ -24,11 +24,11 @@ export default function AdminAccountsPage() {
     await fetch("/api/deposit-accounts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, priority: parseInt(form.priority) }),
+      body: JSON.stringify({ ...form, name: "TRC20 Wallet", priority: parseInt(form.priority) }),
     });
     setSaving(false);
     setShowForm(false);
-    setForm({ name: "", number: "", method: "EASYPAISA", priority: "5" });
+    setForm({ name: "", number: "", method: "CRYPTO_TRC20", priority: "5" });
     load();
   };
 
@@ -56,12 +56,12 @@ export default function AdminAccountsPage() {
     load();
   };
 
-  const methodColors: Record<string, string> = { EASYPAISA: "bg-green-500/20 text-green-400", JAZZCASH: "bg-red-500/20 text-red-400", BANK: "bg-blue-500/20 text-blue-400" };
+  const methodColors: Record<string, string> = { EASYPAISA: "bg-green-500/20 text-green-400", CRYPTO_TRC20: "bg-blue-500/20 text-blue-400" };
 
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <div><h1 className="text-3xl font-bold text-white">Deposit Accounts</h1><p className="text-sm text-slate-400 mt-1">Manage Easypaisa, JazzCash &amp; Bank accounts. Higher priority = shown more to users.</p></div>
+        <div><h1 className="text-3xl font-bold text-white">Deposit Accounts</h1><p className="text-sm text-slate-400 mt-1">Manage Crypto USDT accounts. Higher priority = shown more to users.</p></div>
         <button onClick={() => setShowForm(!showForm)}
           className="bg-amber-500 text-slate-900 px-6 py-3 rounded-xl font-bold text-sm hover:bg-amber-400 flex items-center gap-2">
           <span className="material-symbols-outlined text-[18px]">add</span>{showForm ? "Cancel" : "Add Account"}
@@ -70,16 +70,13 @@ export default function AdminAccountsPage() {
 
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-slate-800 border border-slate-700 rounded-2xl p-6 mb-8 grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-1"><label className="text-xs text-slate-400 font-medium uppercase">Account Name</label>
-            <input type="text" required value={form.name} onChange={(e) => setForm(p => ({ ...p, name: e.target.value }))} placeholder="Muhammad Ali"
-              className="bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white text-sm focus:ring-2 focus:ring-amber-500 outline-none" /></div>
-          <div className="flex flex-col gap-1"><label className="text-xs text-slate-400 font-medium uppercase">Account Number</label>
-            <input type="text" required value={form.number} onChange={(e) => setForm(p => ({ ...p, number: e.target.value }))} placeholder="03001234567"
+          <div className="flex flex-col gap-1"><label className="text-xs text-slate-400 font-medium uppercase">Wallet Address (TRC20)</label>
+            <input type="text" required value={form.number} onChange={(e) => setForm(p => ({ ...p, number: e.target.value }))} placeholder="T..."
               className="bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white text-sm focus:ring-2 focus:ring-amber-500 outline-none" /></div>
           <div className="flex flex-col gap-1"><label className="text-xs text-slate-400 font-medium uppercase">Method</label>
             <select value={form.method} onChange={(e) => setForm(p => ({ ...p, method: e.target.value }))}
               className="bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white text-sm focus:ring-2 focus:ring-amber-500 outline-none">
-              <option value="EASYPAISA">Easypaisa</option><option value="JAZZCASH">JazzCash</option><option value="BANK">Bank Transfer</option>
+              <option value="CRYPTO_TRC20">Crypto (USDT TRC20)</option>
             </select></div>
           <div className="flex flex-col gap-1"><label className="text-xs text-slate-400 font-medium uppercase">Priority (1-10)</label>
             <input type="number" min="1" max="10" required value={form.priority} onChange={(e) => setForm(p => ({ ...p, priority: e.target.value }))}

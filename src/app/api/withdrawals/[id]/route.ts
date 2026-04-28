@@ -27,7 +27,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
         userId: withdrawal.userId,
         type: "WITHDRAWAL",
         amount: -withdrawal.amount,
-        description: `Withdrawal approved - Rs. ${withdrawal.amount}`,
+        description: `Withdrawal approved - $ ${withdrawal.amount}`,
       },
     });
   }

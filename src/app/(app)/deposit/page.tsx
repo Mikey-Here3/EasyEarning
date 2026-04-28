@@ -23,7 +23,13 @@ export default function DepositPage() {
     const stored = sessionStorage.getItem("selectedPlan");
     if (stored) setSelectedPlan(JSON.parse(stored));
     fetch("/api/deposit-accounts").then(r => r.json()).then(data => {
-      if (!data.error) setAccount(data);
+      if (!data.error) {
+        if (Array.isArray(data)) {
+          setAccount(data[0] || null);
+        } else {
+          setAccount(data);
+        }
+      }
     });
   }, []);
 

@@ -6,7 +6,7 @@ function generateRefCode(): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let code = "EE-";
   for (let i = 0; i < 5; i++) {
-    code += cha$charAt(Math.floor(Math.random() * cha$length));
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return code;
 }

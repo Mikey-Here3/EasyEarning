@@ -40,6 +40,12 @@ export default function DashboardPage() {
   }
 
   if (!data) return null;
+  if ('error' in data || !data.user) {
+    // If the session is stale (user deleted), force a redirect or show nothing
+    if (typeof window !== "undefined") window.location.href = "/api/auth/signin";
+    return null;
+  }
+  
   const { user, totalDeposits, totalWithdrawals } = data;
 
   return (

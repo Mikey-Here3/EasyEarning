@@ -35,7 +35,10 @@ export default function LoginPage() {
 
   return (
     <div className="w-full max-w-[400px] mx-auto bg-neu-bg min-h-screen flex flex-col" style={{ boxShadow: "0 0 50px rgba(0,0,0,0.05)" }}>
-      <header className="h-16 flex items-center justify-center" style={{ boxShadow: "5px 5px 15px #D1D9E6, -5px -5px 15px #FFFFFF" }}>
+      <header className="h-16 flex items-center justify-center relative" style={{ boxShadow: "5px 5px 15px #D1D9E6, -5px -5px 15px #FFFFFF" }}>
+        <Link href="/" className="absolute left-4 w-10 h-10 rounded-full bg-neu-bg flex items-center justify-center text-slate-600 active:scale-95 transition-all" style={{ boxShadow: "5px 5px 10px #D1D9E6, -5px -5px 10px #FFFFFF" }}>
+          <span className="material-symbols-outlined">arrow_back</span>
+        </Link>
         <h1 className="text-lg font-black text-slate-900 uppercase tracking-wider">Easy Earning</h1>
       </header>
 

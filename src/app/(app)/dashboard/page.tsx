@@ -20,10 +20,12 @@ interface DashboardData {
 export default function DashboardPage() {
   const { open } = useSidebar();
   const [data, setData] = useState<DashboardData | null>(null);
+  const [plans, setPlans] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/dashboard").then(r => r.json()).then(setData).finally(() => setLoading(false));
+    fetch("/api/plans").then(r => r.json()).then(setPlans);
   }, []);
 
   if (loading) {
@@ -138,9 +140,47 @@ export default function DashboardPage() {
           <div className="bg-surface p-5 rounded-lg neu-convex flex flex-col">
             <span className="material-symbols-outlined text-secondary mb-2" style={{ fontVariationSettings: "'FILL' 1" }}>payments</span>
             <span className="text-body-md text-on-surface-variant text-[12px]">Total Withdrawals</span>
-            <span className="text-headline-md text-on-surface mt-1">$ {totalWithdrawals.toLocaleString()}</span>
           </div>
         </section>
+
+        {/* Available Plans */}
+        {plans.length > 0 && (
+          <section className="flex flex-col gap-4 pb-4">
+            <h3 className="text-headline-md text-on-surface text-[16px] px-1">Available Plans</h3>
+            <div className="flex flex-col gap-4">
+              {plans.map((plan: any) => (
+                <div key={plan.id} className="bg-surface rounded-xl p-5 neu-convex border border-outline-variant/40 flex flex-col gap-3 relative overflow-hidden">
+                  <div className="flex justify-between items-start">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-label-caps text-primary tracking-widest">{plan.name} Plan</span>
+                        {plan.badge && (
+                          <span className="bg-primary-container text-on-primary-container text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
+                            {plan.badge}
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-display text-on-background tracking-tighter">$ {plan.price}</span>
+                      <span className="text-body-md text-on-surface-variant flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[16px]">schedule</span> Daily $ {plan.dailyProfit} for {plan.validity} Days
+                      </span>
+                    </div>
+                    <div className="w-12 h-12 rounded-full bg-surface neu-concave-sm flex items-center justify-center text-primary">
+                      <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>savings</span>
+                    </div>
+                  </div>
+                  <button onClick={() => {
+                      sessionStorage.setItem("selectedPlan", JSON.stringify(plan));
+                      window.location.href = "/deposit";
+                    }}
+                    className="w-full py-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-900 text-center text-label-caps font-bold active:scale-95 transition-all">
+                    Buy Now
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
       </main>
       <BottomNav />
     </>

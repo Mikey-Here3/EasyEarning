@@ -30,7 +30,7 @@ export default function WithdrawPage() {
 
   const handleWithdraw = async () => {
     const num = parseFloat(amount);
-    if (!num || num < 500 || num > balance || !accountName || !accountNumber) return;
+    if (!num || num < 50 || num > balance || !accountName || !accountNumber) return;
     setLoading(true);
     const res = await fetch("/api/withdrawals", {
       method: "POST",
@@ -38,7 +38,12 @@ export default function WithdrawPage() {
       body: JSON.stringify({ amount: num, method, accountName, accountNumber }),
     });
     setLoading(false);
-    if (res.ok) setSuccess(true);
+    if (res.ok) {
+      setSuccess(true);
+    } else {
+      const data = await res.json();
+      alert(data.error || "Withdrawal failed");
+    }
   };
 
   if (pageLoading) {
@@ -114,6 +119,8 @@ export default function WithdrawPage() {
             <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Minimum withdrawal: $ 50</li>
             <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Processing within 24 hours</li>
             <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Must have deposit + active plan</li>
+            <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Must refer at least 2 active members</li>
+            <li className="flex items-start gap-2 text-red-500 font-bold uppercase"><span className="text-red-500 mt-1">•</span>Uploads must be a clear showcase of time and sent amount</li>
           </ul>
         </div>
       </main>

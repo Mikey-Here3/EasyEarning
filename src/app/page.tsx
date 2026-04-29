@@ -22,7 +22,7 @@ export default function LandingPage() {
             <div className="w-full h-full rounded-lg bg-gradient-to-br from-amber-200 via-amber-300 to-amber-500 overflow-hidden relative neu-concave flex items-center justify-center">
               <div className="text-center">
                 <span className="material-symbols-outlined text-[80px] text-amber-800/40" style={{ fontVariationSettings: "'FILL' 1" }}>trending_up</span>
-                <p className="text-amber-900/60 font-bold text-sm mt-2">Premium Trading</p>
+                <p className="text-amber-900/60 font-bold text-sm mt-2">Premium Plans</p>
               </div>
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-surface/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/50 shadow-sm flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>trending_up</span>
@@ -52,10 +52,26 @@ export default function LandingPage() {
           <div className="bg-surface rounded-xl p-6 neu-convex border border-outline-variant/40 flex flex-col gap-4 relative overflow-hidden">
             <div className="flex justify-between items-start">
               <div className="flex flex-col gap-1">
-                <span className="text-label-caps text-tertiary tracking-widest">Starter Plan</span>
-                <span className="text-display text-on-background tracking-tighter">$ 275</span>
+                <span className="text-label-caps text-tertiary tracking-widest">Micro Plan</span>
+                <span className="text-display text-on-background tracking-tighter">$ 10</span>
                 <span className="text-body-md text-on-surface-variant flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[16px]">schedule</span> Daily $ 15 for 30 Days
+                  <span className="material-symbols-outlined text-[16px]">schedule</span> Daily $ 2 for 7 Days
+                </span>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-surface neu-concave-sm flex items-center justify-center text-primary">
+                <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>monetization_on</span>
+              </div>
+            </div>
+            <Link href="/register" className="w-full py-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-900 text-center text-label-caps font-bold active:scale-95 transition-all">Buy Now</Link>
+          </div>
+
+          <div className="bg-surface rounded-xl p-6 neu-convex border border-outline-variant/40 flex flex-col gap-4 relative overflow-hidden">
+            <div className="flex justify-between items-start">
+              <div className="flex flex-col gap-1">
+                <span className="text-label-caps text-tertiary tracking-widest">Starter Plan</span>
+                <span className="text-display text-on-background tracking-tighter">$ 25</span>
+                <span className="text-body-md text-on-surface-variant flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[16px]">schedule</span> Daily $ 4 for 10 Days
                 </span>
               </div>
               <div className="w-12 h-12 rounded-full bg-surface neu-concave-sm flex items-center justify-center text-primary">
@@ -70,16 +86,35 @@ export default function LandingPage() {
             <div className="flex justify-between items-start">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-label-caps text-primary tracking-widest">Premium Plan</span>
+                  <span className="text-label-caps text-primary tracking-widest">Basic Plan</span>
                   <span className="bg-primary-container text-on-primary-container text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Popular</span>
                 </div>
-                <span className="text-[40px] leading-tight font-black text-on-background tracking-tighter">$ 2,500</span>
+                <span className="text-[40px] leading-tight font-black text-on-background tracking-tighter">$ 50</span>
                 <span className="text-body-md text-on-surface-variant flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[16px] text-primary">schedule</span> Daily $ 150 for 60 Days
+                  <span className="material-symbols-outlined text-[16px] text-primary">schedule</span> Daily $ 8 for 10 Days
                 </span>
               </div>
               <div className="w-14 h-14 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container" style={{ boxShadow: "inset 2px 2px 4px rgba(255,255,255,0.5), inset -2px -2px 4px rgba(0,0,0,0.1)" }}>
                 <span className="material-symbols-outlined text-[28px]" style={{ fontVariationSettings: "'FILL' 1" }}>diamond</span>
+              </div>
+            </div>
+            <Link href="/register" className="w-full py-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-900 text-center text-label-caps font-bold active:scale-95 transition-all">Buy Now</Link>
+          </div>
+
+          <div className="bg-surface rounded-xl p-6 neu-convex border border-outline-variant/40 flex flex-col gap-4 relative overflow-hidden">
+            <div className="flex justify-between items-start">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-label-caps text-tertiary tracking-widest">Pro Plan</span>
+                  <span className="bg-amber-100 text-amber-800 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Hot</span>
+                </div>
+                <span className="text-display text-on-background tracking-tighter">$ 100</span>
+                <span className="text-body-md text-on-surface-variant flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[16px]">schedule</span> Daily $ 18 for 10 Days
+                </span>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-surface neu-concave-sm flex items-center justify-center text-amber-600">
+                <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>monitoring</span>
               </div>
             </div>
             <Link href="/register" className="w-full py-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-900 text-center text-label-caps font-bold active:scale-95 transition-all">Buy Now</Link>

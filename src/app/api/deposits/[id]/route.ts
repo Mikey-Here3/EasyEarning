@@ -12,6 +12,12 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   const { id } = await params;
   const { status, adminNote } = await req.json();
 
+  const currentDeposit = await prisma.depositRequest.findUnique({ where: { id } });
+  if (!currentDeposit) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (currentDeposit.status !== "PENDING") {
+    return NextResponse.json({ error: "Deposit already processed" }, { status: 400 });
+  }
+
   const deposit = await prisma.depositRequest.update({
     where: { id },
     data: { status, adminNote },

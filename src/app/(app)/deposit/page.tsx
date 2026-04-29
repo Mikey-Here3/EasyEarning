@@ -41,14 +41,14 @@ export default function DepositPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!tid || !proofUrl || !account) return;
+    if (!amount || !proofUrl || !account) return;
     setLoading(true);
     await fetch("/api/deposits", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         amount: parseFloat(amount) || 0,
-        tid,
+        tid: "SCREENSHOT_ONLY",
         proofUrl,
         accountId: account.id,
         planId: selectedPlan?.id,
@@ -103,10 +103,18 @@ export default function DepositPage() {
               </div>
               <span className="text-headline-md text-slate-800">Transfer to {account.method}</span>
             </div>
-            <div className="flex justify-between items-center">
+
+            <div className="flex flex-col items-center gap-4 py-2 border-b border-slate-200">
+              <div className="w-48 h-48 rounded-xl overflow-hidden neu-convex">
+                <img src="/qr-placeholder.png" alt="TRC20 QR Code" className="w-full h-full object-cover" />
+              </div>
+              <span className="text-label-caps text-slate-500">SCAN QR CODE TO PAY</span>
+            </div>
+
+            <div className="flex justify-between items-center mt-2">
               <div className="flex flex-col">
                 <span className="text-label-caps text-slate-500 mb-1">WALLET ADDRESS (TRC20)</span>
-                <span className="text-headline-md tracking-wider text-slate-900 break-all">{account.number}</span>
+                <span className="text-body-md tracking-wider text-slate-900 break-all pr-2">{account.number}</span>
               </div>
               <button onClick={() => navigator.clipboard.writeText(account.number)}
                 className="w-10 h-10 rounded-full bg-neu-bg neu-button flex items-center justify-center text-amber-600 active:scale-95 shrink-0 ml-4">
@@ -118,26 +126,36 @@ export default function DepositPage() {
           <div className="bg-red-50 p-4 rounded-xl text-red-700 text-body-md">No deposit accounts available. Please contact admin.</div>
         )}
 
-        <form className="flex flex-col gap-4 mt-2" onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-2">
-            <label className="text-label-caps text-slate-600 px-2">AMOUNT (USD)</label>
-            <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="e.g. 50" required
-              className="w-full bg-neu-bg rounded-xl px-4 py-4 text-body-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
-              style={{ boxShadow: "inset 5px 5px 10px #D1D9E6, inset -5px -5px 10px #FFFFFF" }} />
+        <form className="flex flex-col gap-6 mt-2" onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-3">
+            <label className="text-label-caps text-slate-600 px-2">SELECT AMOUNT (USD)</label>
+            <div className="grid grid-cols-2 gap-3">
+              {[10, 25, 50, 100, 250, 500].map((val) => (
+                <button type="button" key={val} onClick={() => setAmount(val.toString())}
+                  className={`py-4 rounded-xl text-headline-sm transition-all ${amount === val.toString() ? "bg-amber-400 text-slate-900 border-2 border-amber-500" : "bg-neu-bg text-slate-600 border-2 border-transparent hover:border-amber-200"}`}
+                  style={{ boxShadow: amount === val.toString() ? "inset 2px 2px 5px rgba(0,0,0,0.1)" : "5px 5px 10px #D1D9E6, -5px -5px 10px #FFFFFF" }}>
+                  $ {val}
+                </button>
+              ))}
+            </div>
+            {amount && <div className="text-center text-primary font-bold mt-2 text-lg">Selected: $ {amount}</div>}
           </div>
           <div className="flex flex-col gap-2">
-            <label className="text-label-caps text-slate-600 px-2">TRANSACTION ID (TID)</label>
-            <input type="text" value={tid} onChange={(e) => setTid(e.target.value)} placeholder="e.g. 1234567890" required
-              className="w-full bg-neu-bg rounded-xl px-4 py-4 text-body-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            <label className="text-label-caps text-slate-600 px-2">UPLOAD PROOF SCREENSHOT</label>
+            <input type="file" accept="image/*" onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                const reader = new FileReader();
+                reader.onloadend = () => setProofUrl(reader.result as string);
+                reader.readAsDataURL(file);
+              }
+            }} required className="w-full bg-neu-bg rounded-xl px-4 py-4 text-body-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-400"
               style={{ boxShadow: "inset 5px 5px 10px #D1D9E6, inset -5px -5px 10px #FFFFFF" }} />
+            <span className="text-xs text-red-500 font-bold px-2 mt-1 uppercase text-center block">
+              Image must be a clear showcase of time and sent amount
+            </span>
           </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-label-caps text-slate-600 px-2">PROOF URL (SCREENSHOT LINK)</label>
-            <input type="text" value={proofUrl} onChange={(e) => setProofUrl(e.target.value)} placeholder="https://..." required
-              className="w-full bg-neu-bg rounded-xl px-4 py-4 text-body-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
-              style={{ boxShadow: "inset 5px 5px 10px #D1D9E6, inset -5px -5px 10px #FFFFFF" }} />
-          </div>
-          <button type="submit" disabled={!amount || !tid || !proofUrl || loading || !account}
+          <button type="submit" disabled={!amount || !proofUrl || loading || !account}
             className="w-full py-4 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-900 font-bold uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-50 mt-4"
             style={{ boxShadow: "5px 5px 15px #D1D9E6, -5px -5px 15px #FFFFFF" }}>
             <span className="material-symbols-outlined text-[18px]">send</span>

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { v2 as cloudinary } from "cloudinary";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -25,8 +26,19 @@ export async function POST(req: NextRequest) {
   const userId = (session.user as { id: string }).id;
   const { amount, tid, proofUrl, accountId, planId } = await req.json();
 
+  let finalProofUrl = proofUrl || null;
+  if (proofUrl && proofUrl.startsWith("data:image")) {
+    try {
+      const uploadRes = await cloudinary.uploader.upload(proofUrl, { folder: "deposits" });
+      finalProofUrl = uploadRes.secure_url;
+    } catch (error) {
+      console.error("Cloudinary upload error:", error);
+      return NextResponse.json({ error: "Failed to upload image" }, { status: 500 });
+    }
+  }
+
   const deposit = await prisma.depositRequest.create({
-    data: { userId, accountId, amount: parseFloat(amount), tid, proofUrl: proofUrl || null },
+    data: { userId, accountId, amount: parseFloat(amount), tid, proofUrl: finalProofUrl },
   });
 
   // If a planId is provided, create a pending UserPlan

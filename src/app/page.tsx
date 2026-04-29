@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BottomNav from "@/components/BottomNav";
 
 export default function LandingPage() {
   return (
@@ -19,15 +20,8 @@ export default function LandingPage() {
           </div>
 
           <div className="w-full aspect-[4/3] rounded-xl bg-surface neu-convex p-3">
-            <div className="w-full h-full rounded-lg bg-gradient-to-br from-amber-200 via-amber-300 to-amber-500 overflow-hidden relative neu-concave flex items-center justify-center">
-              <div className="text-center">
-                <span className="material-symbols-outlined text-[80px] text-amber-800/40" style={{ fontVariationSettings: "'FILL' 1" }}>trending_up</span>
-                <p className="text-amber-900/60 font-bold text-sm mt-2">Premium Plans</p>
-              </div>
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-surface/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/50 shadow-sm flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>trending_up</span>
-                <span className="text-label-caps text-on-background uppercase">Consistent Gains</span>
-              </div>
+            <div className="w-full h-full rounded-lg overflow-hidden relative neu-concave">
+              <img src="/cover.jpeg" alt="Cover Image" className="w-full h-full object-cover" />
             </div>
           </div>
 
@@ -121,6 +115,8 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
+
+      <BottomNav />
     </div>
   );
 }

@@ -130,7 +130,7 @@ export default function DepositPage() {
           <div className="flex flex-col gap-3">
             <label className="text-label-caps text-slate-600 px-2">SELECT AMOUNT (USD)</label>
             <div className="grid grid-cols-2 gap-3">
-              {[10, 25, 50, 100, 250, 500].map((val) => (
+              {[10, 25, 50, 100, 250, 500, 800, 1000].map((val) => (
                 <button type="button" key={val} onClick={() => setAmount(val.toString())}
                   className={`py-4 rounded-xl text-headline-sm transition-all ${amount === val.toString() ? "bg-amber-400 text-slate-900 border-2 border-amber-500" : "bg-neu-bg text-slate-600 border-2 border-transparent hover:border-amber-200"}`}
                   style={{ boxShadow: amount === val.toString() ? "inset 2px 2px 5px rgba(0,0,0,0.1)" : "5px 5px 10px #D1D9E6, -5px -5px 10px #FFFFFF" }}>

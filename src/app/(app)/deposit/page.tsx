@@ -43,7 +43,7 @@ export default function DepositPage() {
     e.preventDefault();
     if (!amount || !proofUrl || !account) return;
     setLoading(true);
-    await fetch("/api/deposits", {
+    const res = await fetch("/api/deposits", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -55,9 +55,15 @@ export default function DepositPage() {
       }),
     });
     setLoading(false);
-    setSuccess(true);
-    sessionStorage.removeItem("selectedPlan");
-    setTimeout(() => router.push("/dashboard"), 2500);
+    
+    if (res.ok) {
+      setSuccess(true);
+      sessionStorage.removeItem("selectedPlan");
+      setTimeout(() => router.push("/dashboard"), 2500);
+    } else {
+      const data = await res.json();
+      alert(data.error || "Failed to submit deposit. Please try again.");
+    }
   };
 
   if (success) {

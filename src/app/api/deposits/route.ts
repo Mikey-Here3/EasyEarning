@@ -28,12 +28,17 @@ export async function POST(req: NextRequest) {
 
   let finalProofUrl = proofUrl || null;
   if (proofUrl && proofUrl.startsWith("data:image")) {
-    try {
-      const uploadRes = await cloudinary.uploader.upload(proofUrl, { folder: "deposits" });
-      finalProofUrl = uploadRes.secure_url;
-    } catch (error) {
-      console.error("Cloudinary upload error:", error);
-      return NextResponse.json({ error: "Failed to upload image" }, { status: 500 });
+    if (process.env.CLOUDINARY_URL) {
+      try {
+        const uploadRes = await cloudinary.uploader.upload(proofUrl, { folder: "deposits" });
+        finalProofUrl = uploadRes.secure_url;
+      } catch (error) {
+        console.error("Cloudinary upload error:", error);
+        return NextResponse.json({ error: "Failed to upload image" }, { status: 500 });
+      }
+    } else {
+      // Fallback to saving base64 directly if Cloudinary is not configured
+      finalProofUrl = proofUrl;
     }
   }
 

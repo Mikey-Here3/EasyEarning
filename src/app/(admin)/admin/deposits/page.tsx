@@ -13,6 +13,8 @@ export default function AdminDepositsPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("PENDING");
 
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   const load = () => fetch("/api/deposits").then(r => r.json()).then(setDeposits).finally(() => setLoading(false));
   useEffect(() => { load(); }, []);
 
@@ -61,7 +63,12 @@ export default function AdminDepositsPage() {
                 <div>
                   <span className="text-slate-400">Proof</span>
                   {d.proofUrl ? (
-                    <a href={d.proofUrl} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline block break-all">View Proof</a>
+                    <button 
+                      onClick={() => setSelectedImage(d.proofUrl)} 
+                      className="text-blue-400 hover:text-blue-300 hover:underline block text-left"
+                    >
+                      View Proof
+                    </button>
                   ) : (
                     <p className="text-slate-500">N/A</p>
                   )}
@@ -84,6 +91,28 @@ export default function AdminDepositsPage() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] w-full flex justify-center">
+            <img 
+              src={selectedImage} 
+              alt="Deposit Proof" 
+              className="max-w-full max-h-[90vh] object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button 
+              onClick={() => setSelectedImage(null)}
+              className="absolute -top-4 -right-4 w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center font-bold shadow-lg border-2 border-slate-900"
+            >
+              ✕
+            </button>
+          </div>
         </div>
       )}
     </div>

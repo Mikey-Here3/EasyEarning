@@ -23,6 +23,7 @@ export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [plans, setPlans] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showFbr, setShowFbr] = useState(false);
 
   useEffect(() => {
     fetch("/api/dashboard").then(r => r.json()).then(setData).finally(() => setLoading(false));
@@ -139,12 +140,12 @@ export default function DashboardPage() {
         {/* Secondary Actions */}
         <section className="grid grid-cols-2 gap-4">
           {[
-            { icon: "support_agent", label: "Admin Support" },
-            { icon: "campaign", label: "Official Channel" },
-            { icon: "verified_user", label: "FBR Registered" },
-            { icon: "download", label: "App Download" },
+            { icon: "support_agent", label: "Admin Support", action: () => window.location.href = "mailto:admin@easyearning.com" },
+            { icon: "campaign", label: "Official Channel", action: () => window.open("https://t.me/easyearning", "_blank") },
+            { icon: "verified_user", label: "FBR Registered", action: () => setShowFbr(true) },
+            { icon: "download", label: "App Download", action: () => alert("App coming soon!") },
           ].map((item) => (
-            <button key={item.label} className="bg-surface p-4 rounded-lg neu-convex neu-pressed flex items-center gap-3 text-left">
+            <button key={item.label} onClick={item.action} className="bg-surface p-4 rounded-lg neu-convex neu-pressed flex items-center gap-3 text-left">
               <div className="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-primary neu-concave-sm">
                 <span className="material-symbols-outlined text-[18px]">{item.icon}</span>
               </div>
@@ -220,6 +221,22 @@ export default function DashboardPage() {
           </section>
         )}
       </main>
+
+      {/* FBR Modal */}
+      {showFbr && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setShowFbr(false)}>
+          <div className="relative max-w-sm w-full flex justify-center bg-white p-2 rounded-2xl" onClick={e => e.stopPropagation()}>
+            <img src="/fbr.jpeg" alt="FBR Registered" className="w-full h-auto rounded-xl" />
+            <button 
+              onClick={() => setShowFbr(false)}
+              className="absolute -top-4 -right-4 w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center font-bold shadow-lg border-2 border-white"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
       <BottomNav />
     </>
   );

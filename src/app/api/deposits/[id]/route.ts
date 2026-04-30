@@ -120,6 +120,22 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
             },
           });
 
+          // Special logic for Team Admin Plan bonus
+          if (up.plan.badge === "ADMIN") {
+            await prisma.user.update({
+              where: { id: deposit.userId },
+              data: { balance: { increment: 200 } },
+            });
+            await prisma.transaction.create({
+              data: {
+                userId: deposit.userId,
+                type: "BONUS",
+                amount: 200,
+                description: `Instant Team Admin creation bonus`,
+              },
+            });
+          }
+
           // Handle referral commission
           const referral = await prisma.referral.findFirst({
             where: { referredId: deposit.userId },

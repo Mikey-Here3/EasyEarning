@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import BottomNav from "@/components/BottomNav";
 import { useSidebar } from "../layout";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function TeamPage() {
   const { open } = useSidebar();
-  const [balance, setBalance] = useState(0);
+  const router = useRouter();
+  const [plans, setPlans] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState(false);
   
   // Dialog State
   const [dialog, setDialog] = useState<{
@@ -22,62 +22,41 @@ export default function TeamPage() {
   }>({ isOpen: false, type: "success", title: "", message: "" });
 
   useEffect(() => {
-    fetch("/api/dashboard")
+    fetch("/api/team/plans")
       .then((r) => r.json())
-      .then((data) => {
-        if (!data.error) {
-          setBalance(data.user.balance);
-        }
-      })
+      .then(setPlans)
       .finally(() => setLoading(false));
   }, []);
 
+  const adminPlan = plans.find((p) => p.badge === "ADMIN");
+  const memberPlan = plans.find((p) => p.badge === "TEAM");
+
   const handleCreateAdminPlanClick = () => {
-    if (balance < 1000) return;
-    
+    if (!adminPlan) return;
     setDialog({
       isOpen: true,
       type: "confirm",
-      title: "Create Team Admin",
-      message: "This will deduct $800 from your balance to create a Team Admin Plan. You will get $200 instantly back and $50 daily for 30 days. Proceed?",
-      onConfirm: executeCreateAdminPlan
+      title: "Direct Deposit Required",
+      message: "To create a Team Admin Plan, you must directly deposit $800 to the Admin TRC20 address. You will receive a $200 instant bonus. Proceed to deposit?",
+      onConfirm: () => {
+        sessionStorage.setItem("selectedPlan", JSON.stringify(adminPlan));
+        router.push("/payment-method");
+      }
     });
   };
 
-  const executeCreateAdminPlan = async () => {
-    setDialog({ ...dialog, isOpen: false });
-    setActionLoading(true);
-
-    try {
-      const res = await fetch("/api/team/admin-plan", { method: "POST" });
-      const data = await res.json();
-      
-      if (res.ok) {
-        setDialog({
-          isOpen: true,
-          type: "success",
-          title: "Success",
-          message: "Team Admin Plan created successfully! $200 bonus added."
-        });
-        setBalance(data.newBalance);
-      } else {
-        setDialog({
-          isOpen: true,
-          type: "error",
-          title: "Failed",
-          message: data.error || "Failed to create plan"
-        });
+  const handleJoinTeamClick = () => {
+    if (!memberPlan) return;
+    setDialog({
+      isOpen: true,
+      type: "confirm",
+      title: "Direct Deposit Required",
+      message: "To join a team, you must directly deposit $200 to the Admin TRC20 address. Proceed to deposit?",
+      onConfirm: () => {
+        sessionStorage.setItem("selectedPlan", JSON.stringify(memberPlan));
+        router.push("/payment-method");
       }
-    } catch (err: any) {
-      setDialog({
-        isOpen: true,
-        type: "error",
-        title: "Error",
-        message: err.message || "An error occurred"
-      });
-    } finally {
-      setActionLoading(false);
-    }
+    });
   };
 
   if (loading) {
@@ -108,24 +87,17 @@ export default function TeamPage() {
           </div>
           
           <p className="text-body-md text-slate-600 mb-4">
-            Become a Team Admin. Pay <span className="font-bold">$800</span> (requires $1000+ balance). 
+            Become a Team Admin. Pay <span className="font-bold">$800</span> (Direct Deposit). 
             Get <span className="font-bold text-green-600">$200 instant bonus</span> and 
             <span className="font-bold"> $50 daily for 30 days</span>.
           </p>
 
-          <div className="flex justify-between text-body-sm text-slate-500 mb-4 p-3 bg-neu-bg rounded-lg neu-concave-sm">
-            <span>Your Balance:</span>
-            <span className={balance >= 1000 ? "text-green-600 font-bold" : "text-red-500 font-bold"}>
-              ${balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-            </span>
-          </div>
-
           <button 
             onClick={handleCreateAdminPlanClick}
-            disabled={balance < 1000 || actionLoading}
+            disabled={!adminPlan}
             className="w-full py-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-900 font-bold active:scale-95 transition-all disabled:opacity-50"
           >
-            {actionLoading ? "Processing..." : balance < 1000 ? "Insufficient Balance ($1000 min)" : "Create Admin Plan"}
+            Direct Buy Admin Plan
           </button>
         </section>
 
@@ -136,26 +108,22 @@ export default function TeamPage() {
               <span className="text-label-caps text-secondary">Member Plan</span>
             </div>
             <div className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-label-caps">
-              $500
+              $200
             </div>
           </div>
           
           <p className="text-body-md text-slate-600 mb-4">
-            To join a team, you must send a <span className="font-bold">$500 fee</span> to the Site Admin's TRC20 address.
-            After approval, you will get <span className="font-bold"> $50 daily for 30 days</span>.
+            To join a team, you must send a <span className="font-bold">$200 fee</span> to the Site Admin's TRC20 address.
+            After approval, you will get <span className="font-bold"> $20 daily for 30 days</span>.
           </p>
 
-          <ol className="text-body-sm text-slate-600 space-y-2 mb-6 pl-4 list-decimal marker:text-primary font-medium">
-            <li>Go to the <Link href="/deposit" className="text-primary underline">Deposit Page</Link>.</li>
-            <li>Send exactly $500 to the Admin TRC20 Address.</li>
-            <li>Upload proof and wait for Admin approval.</li>
-            <li>Once approved, your balance will be $500.</li>
-            <li>Go to <Link href="/plans" className="text-primary underline">Plans</Link> and buy the "Team Member" plan.</li>
-          </ol>
-
-          <Link href="/deposit" className="block w-full py-3 rounded-full bg-neu-bg neu-convex text-center text-primary font-bold active:scale-95 transition-all border border-primary/20">
-            Go to Deposit
-          </Link>
+          <button 
+            onClick={handleJoinTeamClick}
+            disabled={!memberPlan}
+            className="w-full py-3 rounded-full bg-neu-bg neu-convex text-primary font-bold active:scale-95 transition-all border border-primary/20"
+          >
+            Direct Buy Member Plan
+          </button>
         </section>
       </main>
 

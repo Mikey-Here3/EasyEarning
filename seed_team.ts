@@ -8,10 +8,10 @@ async function main() {
     data: {
       name: "Team Member",
       badge: "TEAM",
-      price: 500,
-      dailyProfit: 50,
+      price: 200,
+      dailyProfit: 20,
       validity: 30,
-      totalProfit: 1500,
+      totalProfit: 600,
       refBonus: 5,
       isActive: true,
     },

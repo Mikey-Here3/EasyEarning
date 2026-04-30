@@ -13,6 +13,7 @@ interface DashboardData {
   totalWithdrawals: number;
   hasDeposited: boolean;
   hasActivePlan: boolean;
+  activePlans: any[];
   teamMembers: number;
   totalCommission: number;
 }
@@ -80,6 +81,43 @@ export default function DashboardPage() {
             {user.balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </div>
         </section>
+
+        {/* Active Plan Display */}
+        {data.activePlans && data.activePlans.length > 0 && (
+          <section className="bg-surface p-5 rounded-lg neu-convex flex flex-col gap-3 border border-amber-200/30 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-amber-400/10 to-amber-600/10 rounded-bl-full pointer-events-none" />
+            <div className="flex justify-between items-start">
+              <h3 className="text-headline-md text-on-surface text-[16px] flex items-center gap-2">
+                <span className="material-symbols-outlined text-amber-500" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span>
+                Your Active Plan
+              </h3>
+              <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider flex items-center gap-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse-dot" /> LIVE
+              </div>
+            </div>
+            {data.activePlans.slice(0, 1).map((up: any) => (
+              <div key={up.id} className="flex flex-col gap-2 z-10">
+                <div className="flex justify-between items-end">
+                  <span className="text-headline-lg text-slate-800">{up.plan.name}</span>
+                  <span className="text-body-md text-on-surface-variant font-medium">
+                    Daily: <span className="text-primary font-bold">${up.plan.dailyProfit}</span>
+                  </span>
+                </div>
+                <div className="w-full h-2 rounded-full bg-neu-bg neu-concave-sm overflow-hidden mt-1">
+                  <div 
+                    className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-600" 
+                    style={{ 
+                      width: `${Math.min(100, Math.max(0, ((new Date().getTime() - new Date(up.activatedAt).getTime()) / (new Date(up.expiresAt).getTime() - new Date(up.activatedAt).getTime())) * 100))}%` 
+                    }} 
+                  />
+                </div>
+                <span className="text-[10px] text-on-surface-variant text-right">
+                  {Math.max(0, Math.ceil((new Date(up.expiresAt).getTime() - new Date().getTime()) / 86400000))} days left
+                </span>
+              </div>
+            ))}
+          </section>
+        )}
 
         {/* Quick Actions */}
         <section className="grid grid-cols-4 gap-4 pt-2">

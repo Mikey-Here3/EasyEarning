@@ -31,12 +31,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Insufficient balance" }, { status: 400 });
   }
 
-  // Check if user has active plan
-  const activePlan = await prisma.userPlan.findFirst({
-    where: { userId, status: "ACTIVE" },
+  // Check if user has purchased a plan within the last 60 days
+  const sixtyDaysAgo = new Date();
+  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+  
+  const recentPlan = await prisma.userPlan.findFirst({
+    where: { 
+      userId, 
+      createdAt: { gte: sixtyDaysAgo }
+    },
   });
-  if (!activePlan) {
-    return NextResponse.json({ error: "You must have an active plan to withdraw" }, { status: 400 });
+  if (!recentPlan) {
+    return NextResponse.json({ error: "You must have purchased a plan within the last 60 days to withdraw" }, { status: 400 });
   }
 
   // Check if user has deposited

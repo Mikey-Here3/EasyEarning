@@ -2,16 +2,25 @@
 
 import { useEffect, useState } from "react";
 
-const FIRST_NAMES = ["James", "Sarah", "Michael", "Emma", "David", "Olivia", "Daniel", "Sophia", "Chris", "Mia", "Alex", "Liam", "Noah", "Ethan", "Lucas"];
+const FIRST_NAMES = [
+  // US/UK
+  "James", "Sarah", "Michael", "Emma", "David", "Olivia", "Daniel", "Sophia", "Chris", "Mia",
+  "Alex", "Liam", "Noah", "Ethan", "Lucas", "Charlotte", "Amelia", "Harper", "Evelyn",
+  // Pakistan
+  "Ali", "Ayesha", "Usman", "Fatima", "Bilal", "Zainab", "Omar", "Hassan", "Khadija", "Hamza", "Maryam",
+  // India
+  "Rahul", "Priya", "Amit", "Neha", "Raj", "Anjali", "Vikram", "Sneha", "Karan", "Pooja"
+];
 const ACTIONS = [
-  "just purchased VIP Plan",
-  "received $200 referral bonus",
-  "just withdrew $5,000",
-  "purchased Team Plan",
-  "got a reward bonus of $100",
-  "just withdrew $12,000",
-  "purchased Premium Plan",
-  "received $500 referral bonus"
+  "just purchased Starter Plan",
+  "just deposited $500 to join a Team",
+  "created a new Team Admin Plan",
+  "just withdraw $150 to their TRC20 wallet",
+  "received a 5% Team referral bonus",
+  "just deposited $1,000",
+  "activated a Team Member Plan",
+  "just withdraw $500",
+  "got $200 instant bonus for creating Team"
 ];
 
 function generateFakeActivity(seed: number) {
@@ -21,7 +30,7 @@ function generateFakeActivity(seed: number) {
   };
 
   const activities = [];
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 40; i++) {
     const isWallet = random() > 0.5;
     let userStr = "";
     if (isWallet) {
@@ -43,7 +52,8 @@ export default function LiveTicker() {
 
   useEffect(() => {
     const today = new Date();
-    const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    // Seed changes every 12 hours
+    const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate() + (today.getHours() >= 12 ? 0.5 : 0);
     setActivities(generateFakeActivity(seed));
   }, []);
 

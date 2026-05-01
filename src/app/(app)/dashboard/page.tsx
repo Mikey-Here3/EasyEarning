@@ -142,7 +142,7 @@ export default function DashboardPage() {
           {[
             { icon: "support_agent", label: "Admin Support", action: () => window.location.href = "mailto:admin@easyearning.com" },
             { icon: "campaign", label: "Official Channel", action: () => window.open("https://t.me/easy_earning_001", "_blank") },
-            { icon: "verified_user", label: "Internal Revenue Service (IRS) Registered", action: () => setShowIrs(true) },
+            { icon: "verified_user", label: "IRS Registered", action: () => setShowIrs(true) },
             { icon: "download", label: "App Download", action: () => alert("App coming soon!") },
           ].map((item) => (
             <button key={item.label} onClick={item.action} className="bg-surface p-4 rounded-lg neu-convex neu-pressed flex items-center gap-3 text-left">

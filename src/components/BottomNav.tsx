@@ -8,7 +8,7 @@ const navItems = [
   { label: "Plans", icon: "currency_exchange", href: "/plans" },
   { label: "Deposit", icon: "add_card", href: "/payment-method" },
   { label: "Withdraw", icon: "account_balance", href: "/withdraw" },
-  { label: "Team", icon: "groups", href: "/team" },
+  { label: "Team", icon: "groups", href: "/referral" },
 ];
 
 export default function BottomNav() {
@@ -25,7 +25,7 @@ export default function BottomNav() {
           (item.href === "/plans" && (pathname === "/plans" || pathname === "/active-plans")) ||
           (item.href === "/payment-method" && (pathname === "/deposit" || pathname === "/payment-method")) ||
           (item.href === "/withdraw" && pathname === "/withdraw") ||
-          (item.href === "/team" && (pathname === "/team" || pathname === "/referral"));
+          (item.href === "/referral" && pathname === "/referral");
 
         return (
           <Link

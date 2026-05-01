@@ -76,8 +76,8 @@ export default function AdminPlansPage() {
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-slate-800 border border-slate-700 rounded-2xl p-6 mb-8 grid grid-cols-2 gap-4">
-          <div className="col-span-2 flex justify-between items-center mb-2">
+        <form onSubmit={handleSubmit} className="bg-slate-800 border border-slate-700 rounded-2xl p-6 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="col-span-1 md:col-span-2 flex justify-between items-center mb-2">
             <h2 className="text-xl font-bold text-white">{editingPlanId ? "Edit Plan" : "Create New Plan"}</h2>
           </div>
           {[
@@ -96,7 +96,7 @@ export default function AdminPlansPage() {
                 className="bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white text-sm focus:ring-2 focus:ring-amber-500 outline-none" />
             </div>
           ))}
-          <div className="col-span-2 mt-4">
+          <div className="col-span-1 md:col-span-2 mt-4">
             <button type="submit" disabled={saving} className="bg-amber-500 text-slate-900 px-8 py-3 rounded-xl font-bold text-sm hover:bg-amber-400 disabled:opacity-50">
               {saving ? "Saving..." : editingPlanId ? "Update Plan" : "Create Plan"}
             </button>

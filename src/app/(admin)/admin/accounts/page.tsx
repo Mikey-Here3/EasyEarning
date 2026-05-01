@@ -69,7 +69,7 @@ export default function AdminAccountsPage() {
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-slate-800 border border-slate-700 rounded-2xl p-6 mb-8 grid grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="bg-slate-800 border border-slate-700 rounded-2xl p-6 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1"><label className="text-xs text-slate-400 font-medium uppercase">Wallet Address (TRC20)</label>
             <input type="text" required value={form.number} onChange={(e) => setForm(p => ({ ...p, number: e.target.value }))} placeholder="T..."
               className="bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white text-sm focus:ring-2 focus:ring-amber-500 outline-none" /></div>
@@ -81,7 +81,7 @@ export default function AdminAccountsPage() {
           <div className="flex flex-col gap-1"><label className="text-xs text-slate-400 font-medium uppercase">Priority (1-10)</label>
             <input type="number" min="1" max="10" required value={form.priority} onChange={(e) => setForm(p => ({ ...p, priority: e.target.value }))}
               className="bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white text-sm focus:ring-2 focus:ring-amber-500 outline-none" /></div>
-          <div className="col-span-2"><button type="submit" disabled={saving} className="bg-amber-500 text-slate-900 px-8 py-3 rounded-xl font-bold text-sm hover:bg-amber-400 disabled:opacity-50">{saving ? "Adding..." : "Add Account"}</button></div>
+          <div className="col-span-1 md:col-span-2"><button type="submit" disabled={saving} className="bg-amber-500 text-slate-900 px-8 py-3 rounded-xl font-bold text-sm hover:bg-amber-400 disabled:opacity-50">{saving ? "Adding..." : "Add Account"}</button></div>
         </form>
       )}
 
@@ -90,12 +90,12 @@ export default function AdminAccountsPage() {
       ) : (
         <div className="grid gap-4">
           {accounts.map((acc) => (
-            <div key={acc.id} className={`bg-slate-800 border rounded-2xl p-6 flex items-center justify-between transition-colors ${acc.isActive ? "border-slate-700" : "border-red-500/30 opacity-60"}`}>
+            <div key={acc.id} className={`bg-slate-800 border rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-colors ${acc.isActive ? "border-slate-700" : "border-red-500/30 opacity-60"}`}>
               <div className="flex items-center gap-4">
                 <div className={`px-3 py-1 rounded-lg text-xs font-bold uppercase ${methodColors[acc.method] || ""}`}>{acc.method}</div>
-                <div><p className="text-white font-semibold">{acc.name}</p><p className="text-slate-400 text-sm">{acc.number}</p></div>
+                <div><p className="text-white font-semibold">{acc.name}</p><p className="text-slate-400 text-sm break-all">{acc.number}</p></div>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex flex-wrap items-center gap-4">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-slate-400">Priority:</span>
                   <select value={acc.priority} onChange={(e) => updatePriority(acc, parseInt(e.target.value))}

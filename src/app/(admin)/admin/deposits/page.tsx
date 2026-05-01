@@ -56,7 +56,7 @@ export default function AdminDepositsPage() {
                 </div>
                 <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase ${statusColors[d.status] || ""}`}>{d.status}</span>
               </div>
-              <div className="grid grid-cols-4 gap-4 text-sm mb-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
                 <div><span className="text-slate-400">Amount</span><p className="text-amber-400 font-bold text-lg">$ {d.amount.toLocaleString()}</p></div>
                 <div><span className="text-slate-400">TID</span><p className="text-white font-mono">{d.tid}</p></div>
                 <div><span className="text-slate-400">To Account</span><p className="text-white">{d.account?.name || "Deleted Account"} ({d.account?.method || "N/A"})</p></div>

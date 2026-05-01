@@ -51,7 +51,7 @@ export default function AdminWithdrawalsPage() {
                 <div><p className="text-white font-semibold">{w.user.name}</p><p className="text-slate-400 text-xs">{w.user.email} • Balance: $ {w.user.balance.toLocaleString()}</p></div>
                 <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase ${statusColors[w.status] || ""}`}>{w.status}</span>
               </div>
-              <div className="grid grid-cols-3 gap-4 text-sm mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm mb-4">
                 <div><span className="text-slate-400">Amount</span><p className="text-red-400 font-bold text-lg">$ {w.amount.toLocaleString()}</p></div>
                 <div><span className="text-slate-400">Method</span><p className="text-white">{w.method}</p></div>
                 <div><span className="text-slate-400">Account</span><p className="text-white">{w.accountName}<br /><span className="text-slate-400">{w.accountNumber}</span></p></div>

@@ -97,6 +97,22 @@ export default function DashboardPage() {
           </div>
         </section>
 
+        {/* History Shortcut */}
+        <Link href="/history" className="block relative group">
+          <section className="bg-surface p-4 rounded-lg neu-convex flex items-center justify-between group-hover:scale-[1.02] transition-transform">
+            <div className="flex items-center gap-4">
+               <div className="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center text-primary neu-concave-sm">
+                  <span className="material-symbols-outlined">history</span>
+               </div>
+               <div className="flex flex-col">
+                 <h3 className="text-body-lg font-bold text-on-surface">Transaction History</h3>
+                 <p className="text-label-caps text-on-surface-variant opacity-80 mt-0.5">Deposits, Withdrawals & Plans</p>
+               </div>
+            </div>
+            <span className="material-symbols-outlined text-primary">chevron_right</span>
+          </section>
+        </Link>
+
         {/* Active Plan Display */}
         {data.activePlans && data.activePlans.length > 0 && (
           <Link href="/active-plans" className="block relative group">

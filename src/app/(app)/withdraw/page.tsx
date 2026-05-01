@@ -139,7 +139,6 @@ export default function WithdrawPage() {
             <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Minimum withdrawal: $ 50</li>
             <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Processing within 24 hours</li>
             <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Must have bought a plan at least once (within 60 days)</li>
-            <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Must refer at least 2 active members</li>
             <li className="flex items-start gap-2 text-red-500 font-bold uppercase"><span className="text-red-500 mt-1">•</span>Uploads must be a clear showcase of time and sent amount</li>
           </ul>
         </div>

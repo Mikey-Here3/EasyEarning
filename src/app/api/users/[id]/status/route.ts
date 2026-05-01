@@ -10,13 +10,14 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   }
 
   const { id } = await params;
-  const { status, penaltyAmount } = await req.json();
+  const { status, penaltyAmount, balance } = await req.json();
 
   const user = await prisma.user.update({
     where: { id },
     data: {
       status,
-      penaltyAmount: status === "RESTRICTED" ? penaltyAmount : 0,
+      penaltyAmount: status === "RESTRICTED" ? parseFloat(penaltyAmount) : 0,
+      balance: balance !== undefined ? parseFloat(balance) : undefined,
     },
   });
 

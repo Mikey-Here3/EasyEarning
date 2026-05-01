@@ -15,12 +15,14 @@ export default function AdminUsersPage() {
   const [manageUser, setManageUser] = useState<User | null>(null);
   const [manageStatus, setManageStatus] = useState<string>("ACTIVE");
   const [penaltyAmount, setPenaltyAmount] = useState<string>("0");
+  const [manageBalance, setManageBalance] = useState<string>("0");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (manageUser) {
       setManageStatus(manageUser.status);
       setPenaltyAmount(manageUser.penaltyAmount?.toString() || "0");
+      setManageBalance(manageUser.balance?.toString() || "0");
     }
   }, [manageUser]);
 
@@ -41,6 +43,7 @@ export default function AdminUsersPage() {
       body: JSON.stringify({
         status: manageStatus,
         penaltyAmount: manageStatus === "RESTRICTED" ? parseFloat(penaltyAmount) : 0,
+        balance: parseFloat(manageBalance),
       }),
     });
     setSaving(false);
@@ -128,6 +131,17 @@ export default function AdminUsersPage() {
                   <option value="RESTRICTED">Restricted (Penalty Required)</option>
                   <option value="BANNED">Banned (Login Blocked)</option>
                 </select>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-sm text-slate-400">Wallet Balance (USD)</label>
+                <input
+                  type="number"
+                  value={manageBalance}
+                  onChange={(e) => setManageBalance(e.target.value)}
+                  placeholder="e.g. 100"
+                  className="bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white outline-none focus:border-amber-500"
+                />
               </div>
 
               {manageStatus === "RESTRICTED" && (

@@ -6,6 +6,7 @@ import BottomNav from "@/components/BottomNav";
 import LiveTicker from "@/components/LiveTicker";
 import { useSidebar } from "../layout";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
 
 interface DashboardData {
   user: { name: string; refCode: string; balance: number; role: string };
@@ -16,6 +17,7 @@ interface DashboardData {
   activePlans: any[];
   teamMembers: number;
   totalCommission: number;
+  pendingBonuses?: { id: string; amount: number; description: string }[];
 }
 
 export default function DashboardPage() {
@@ -29,6 +31,21 @@ export default function DashboardPage() {
     fetch("/api/dashboard").then(r => r.json()).then(setData).finally(() => setLoading(false));
     fetch("/api/plans").then(r => r.json()).then(setPlans);
   }, []);
+
+  const handleBonusAction = async (id: string, status: "APPROVED" | "REJECTED") => {
+    const res = await fetch(`/api/bonus/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status })
+    });
+    if (res.ok) {
+      toast.success(`Bonus ${status.toLowerCase()} successfully!`);
+      // Refresh dashboard data
+      fetch("/api/dashboard").then(r => r.json()).then(setData);
+    } else {
+      toast.error("Failed to process bonus");
+    }
+  };
 
   if (loading) {
     return (
@@ -58,6 +75,34 @@ export default function DashboardPage() {
       <Header onMenuClick={open} />
       <div className="pt-16"><LiveTicker /></div>
       <main className="pt-4 px-6 flex flex-col gap-6 pb-28 stagger-children">
+        
+        {/* Pending Bonuses Banner */}
+        {data.pendingBonuses && data.pendingBonuses.length > 0 && (
+          <section className="bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg p-5 shadow-lg relative overflow-hidden flex flex-col gap-3">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-bl-full pointer-events-none" />
+            <h3 className="text-slate-900 font-bold text-lg flex items-center gap-2">
+              <span className="material-symbols-outlined">redeem</span>
+              Bonus Available!
+            </h3>
+            {data.pendingBonuses.map(bonus => (
+              <div key={bonus.id} className="bg-white/20 p-3 rounded-lg flex flex-col gap-2 z-10">
+                <div className="flex justify-between items-center text-slate-900">
+                  <span className="font-semibold">{bonus.description}</span>
+                  <span className="font-bold text-xl">${bonus.amount}</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 mt-1">
+                  <button onClick={() => handleBonusAction(bonus.id, "REJECTED")} className="bg-white/40 hover:bg-white/50 text-slate-900 py-2 rounded-lg font-bold text-sm transition-colors">
+                    Reject
+                  </button>
+                  <button onClick={() => handleBonusAction(bonus.id, "APPROVED")} className="bg-slate-900 text-amber-500 py-2 rounded-lg font-bold text-sm hover:bg-slate-800 transition-colors">
+                    Accept Bonus
+                  </button>
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
         {/* User Header */}
         <section className="bg-gradient-to-br from-primary-container to-primary-fixed rounded-lg p-6 neu-convex flex items-center gap-4">
           <div className="w-14 h-14 rounded-full bg-surface neu-convex flex items-center justify-center border-2 border-primary-fixed-dim overflow-hidden">
@@ -194,9 +239,12 @@ export default function DashboardPage() {
           <h3 className="text-headline-md text-on-surface text-[16px]">Invite Friends &amp; Earn</h3>
           <div className="flex items-center bg-surface rounded-full p-1 neu-concave">
             <div className="flex-1 px-4 overflow-hidden">
-              <span className="text-body-md text-on-surface-variant truncate block w-full select-all">easyearning.com/ref/{user.refCode}</span>
+              <span className="text-body-md text-on-surface-variant truncate block w-full select-all">earning.online/ref/{user.refCode}</span>
             </div>
-            <button onClick={() => navigator.clipboard.writeText(`easyearning.com/ref/${user.refCode}`)}
+            <button onClick={() => {
+                navigator.clipboard.writeText(`earning.online/ref/${user.refCode}`);
+                toast.success("Referral link copied!");
+              }}
               className="bg-primary text-on-primary px-4 py-2 rounded-full text-label-caps neu-convex active:scale-95 transition-transform flex items-center gap-2">
               <span className="material-symbols-outlined text-[16px]">content_copy</span>
               Copy

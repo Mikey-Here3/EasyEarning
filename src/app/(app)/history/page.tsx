@@ -10,13 +10,14 @@ interface HistoryData {
   deposits: any[];
   withdrawals: any[];
   userPlans: any[];
+  bonusRequests: any[];
 }
 
 export default function HistoryPage() {
   const { open } = useSidebar();
   const [data, setData] = useState<HistoryData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"plans" | "deposits" | "withdrawals">("plans");
+  const [activeTab, setActiveTab] = useState<"plans" | "deposits" | "withdrawals" | "bonuses">("plans");
 
   useEffect(() => {
     fetch("/api/history").then(r => r.json()).then(setData).finally(() => setLoading(false));
@@ -32,8 +33,8 @@ export default function HistoryPage() {
         </section>
 
         {/* Tabs */}
-        <div className="flex bg-surface rounded-full p-1 neu-concave-sm w-full">
-          {["plans", "deposits", "withdrawals"].map((tab) => (
+        <div className="flex bg-surface rounded-full p-1 neu-concave-sm w-full overflow-x-auto hide-scrollbar">
+          {["plans", "deposits", "withdrawals", "bonuses"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab as any)}
@@ -157,6 +158,38 @@ export default function HistoryPage() {
                     {w.adminNote && (
                       <div className="text-xs text-red-500 mt-1 italic">Note: {w.adminNote}</div>
                     )}
+                  </div>
+                ))
+              )
+            )}
+
+            {/* Bonuses Tab */}
+            {activeTab === "bonuses" && (
+              data?.bonusRequests.length === 0 ? (
+                <EmptyStateCard icon="redeem" title="No Bonuses Found" description="You don't have any bonus requests." actionLabel="Back to Dashboard" actionHref="/dashboard" />
+              ) : (
+                data?.bonusRequests.map(b => (
+                  <div key={b.id} className="bg-surface p-5 rounded-2xl neu-convex flex flex-col gap-2">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-neu-bg neu-concave-sm flex items-center justify-center text-amber-500">
+                          <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>redeem</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-headline-sm text-slate-800">+ ${b.amount}</span>
+                          <span className="text-[10px] text-slate-500">{new Date(b.createdAt).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                        b.status === 'APPROVED' ? 'bg-green-100 text-green-700' :
+                        b.status === 'PENDING' ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'
+                      }`}>
+                        {b.status}
+                      </span>
+                    </div>
+                    <div className="mt-2 text-xs text-slate-500 bg-neu-bg p-2 rounded-lg neu-concave-sm">
+                      <span className="font-bold">Description:</span> {b.description}
+                    </div>
                   </div>
                 ))
               )

@@ -6,6 +6,7 @@ import BottomNav from "@/components/BottomNav";
 import PlanCard from "@/components/PlanCard";
 import { useSidebar } from "../layout";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 interface Plan {
   id: string; name: string; badge: string; price: number;
@@ -69,28 +70,13 @@ export default function PlansPage() {
       const data = await res.json();
       
       if (data.error) {
-        setDialog({
-          isOpen: true,
-          type: "error",
-          title: "Purchase Failed",
-          message: data.error
-        });
+        toast.error(data.error);
       } else {
-        setDialog({
-          isOpen: true,
-          type: "success",
-          title: "Plan Activated!",
-          message: "Your new plan has been activated successfully.",
-          onConfirm: () => router.push("/active-plans")
-        });
+        toast.success("Plan Activated successfully!");
+        router.push("/active-plans");
       }
     } catch (err) {
-      setDialog({
-        isOpen: true,
-        type: "error",
-        title: "Error",
-        message: "An unexpected error occurred."
-      });
+      toast.error("An unexpected error occurred.");
     } finally {
       setPurchasing(null);
     }

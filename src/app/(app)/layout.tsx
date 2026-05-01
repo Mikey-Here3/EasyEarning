@@ -4,6 +4,7 @@ import { useState, createContext, useContext, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 
 const SidebarContext = createContext<{ open: () => void }>({ open: () => {} });
 export const useSidebar = () => useContext(SidebarContext);
@@ -31,6 +32,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="w-full max-w-[400px] mx-auto bg-neu-bg min-h-screen relative overflow-x-hidden" style={{ boxShadow: "0 0 50px rgba(0,0,0,0.05)" }}>
         <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         {children}
+        <Toaster position="top-center" toastOptions={{ 
+          style: { background: '#334155', color: '#fff', borderRadius: '12px' },
+          success: { iconTheme: { primary: '#10b981', secondary: '#fff' } },
+        }} />
       </div>
     </SidebarContext.Provider>
   );

@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import BottomNav from "@/components/BottomNav";
 import { useSidebar } from "../layout";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 export default function WithdrawPage() {
   const { open } = useSidebar();
@@ -64,28 +65,13 @@ export default function WithdrawPage() {
       const data = await res.json();
       
       if (res.ok) {
-        setDialog({
-          isOpen: true,
-          type: "success",
-          title: "Withdrawal Requested!",
-          message: "Your withdrawal has been requested successfully and will be processed within 24 hours.",
-          onConfirm: () => router.push("/dashboard")
-        });
+        toast.success("Withdrawal requested successfully!");
+        router.push("/dashboard");
       } else {
-        setDialog({
-          isOpen: true,
-          type: "error",
-          title: "Withdrawal Failed",
-          message: data.error || "Something went wrong."
-        });
+        toast.error(data.error || "Withdrawal Failed");
       }
     } catch (err: any) {
-      setDialog({
-        isOpen: true,
-        type: "error",
-        title: "Error",
-        message: "An unexpected error occurred."
-      });
+      toast.error("An unexpected error occurred.");
     } finally {
       setLoading(false);
     }

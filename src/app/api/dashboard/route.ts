@@ -36,6 +36,12 @@ export async function GET() {
     _sum: { commission: true },
   });
 
+  const pendingBonuses = await prisma.bonusRequest.findMany({
+    where: { userId, status: "PENDING" },
+    select: { id: true, amount: true, description: true },
+    orderBy: { createdAt: "desc" }
+  });
+
   return NextResponse.json({
     user: { id: user.id, name: user.name, email: user.email, refCode: user.refCode, balance: user.balance, role: user.role },
     totalDeposits: totalDeposits._sum.amount || 0,
@@ -45,5 +51,6 @@ export async function GET() {
     hasActivePlan,
     teamMembers,
     totalCommission: totalCommission._sum.commission || 0,
+    pendingBonuses,
   });
 }

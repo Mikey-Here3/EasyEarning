@@ -34,16 +34,12 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   const { balance, bonusAmount, bonusDescription } = await req.json();
 
   if (bonusAmount) {
-    await prisma.user.update({
-      where: { id },
-      data: { balance: { increment: parseFloat(bonusAmount) } },
-    });
-    await prisma.transaction.create({
+    await prisma.bonusRequest.create({
       data: {
         userId: id,
-        type: "BONUS",
         amount: parseFloat(bonusAmount),
         description: bonusDescription || "Admin bonus",
+        status: "PENDING",
       },
     });
     const updatedUser = await prisma.user.findUnique({ where: { id } });

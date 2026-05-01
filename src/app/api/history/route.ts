@@ -10,7 +10,7 @@ export async function GET() {
   const userId = (session.user as { id: string }).id;
 
   try {
-    const [deposits, withdrawals, userPlans] = await Promise.all([
+    const [deposits, withdrawals, userPlans, bonusRequests] = await Promise.all([
       prisma.depositRequest.findMany({
         where: { userId },
         orderBy: { createdAt: "desc" }
@@ -23,10 +23,14 @@ export async function GET() {
         where: { userId },
         include: { plan: true },
         orderBy: { createdAt: "desc" }
+      }),
+      prisma.bonusRequest.findMany({
+        where: { userId },
+        orderBy: { createdAt: "desc" }
       })
     ]);
 
-    return NextResponse.json({ deposits, withdrawals, userPlans });
+    return NextResponse.json({ deposits, withdrawals, userPlans, bonusRequests });
   } catch (error) {
     console.error("History fetch error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

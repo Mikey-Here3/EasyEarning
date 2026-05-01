@@ -27,7 +27,7 @@ export default function AdminBonusPage() {
       body: JSON.stringify({ bonusAmount, bonusDescription: bonusDescription || "Admin bonus" }),
     });
     setSaving(false);
-    setSuccess(`$ ${parseFloat(bonusAmount).toLocaleString()} bonus added to ${selectedUser.name}`);
+    setSuccess(`Bonus request of $ ${parseFloat(bonusAmount).toLocaleString()} sent to ${selectedUser.name}`);
     setBonusAmount("");
     setBonusDescription("");
     setSelectedUser(null);
@@ -64,7 +64,7 @@ export default function AdminBonusPage() {
 
         {/* Bonus Form */}
         <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Add Bonus</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">Send Bonus Request</h2>
           {selectedUser ? (
             <div className="space-y-4">
               <div className="bg-slate-700/50 p-4 rounded-xl">
@@ -80,13 +80,13 @@ export default function AdminBonusPage() {
                   className="bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white text-sm focus:ring-2 focus:ring-amber-500 outline-none" /></div>
               <button onClick={handleBonus} disabled={!bonusAmount || saving}
                 className="w-full bg-amber-500 text-slate-900 py-3 rounded-xl font-bold text-sm hover:bg-amber-400 disabled:opacity-50 flex items-center justify-center gap-2">
-                <span className="material-symbols-outlined text-[18px]">redeem</span>{saving ? "Processing..." : "Add Bonus"}
+                <span className="material-symbols-outlined text-[18px]">redeem</span>{saving ? "Sending..." : "Send Bonus Request"}
               </button>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-64 text-slate-500">
               <span className="material-symbols-outlined text-[48px] mb-4">person_search</span>
-              <p>Select a user to add bonus</p>
+              <p>Select a user to send a bonus request</p>
             </div>
           )}
         </div>

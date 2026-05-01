@@ -47,7 +47,7 @@ async function main() {
   await prisma.depositAccount.create({
     data: {
       name: 'Main Wallet',
-      number: 'TYourAddressHere1234567890abcdefg',
+      number: '',
       method: 'CRYPTO_TRC20',
       priority: 1,
       isActive: true,

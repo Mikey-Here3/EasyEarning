@@ -53,21 +53,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "You must make a deposit first" }, { status: 400 });
   }
 
-  // Check if user has referred at least 2 people with active plans
-  const activeReferralsCount = await prisma.referral.count({
-    where: {
-      referrerId: userId,
-      referred: {
-        userPlans: {
-          some: { status: "ACTIVE" }
-        }
-      }
-    }
-  });
 
-  if (activeReferralsCount < 2) {
-    return NextResponse.json({ error: "You must refer at least 2 active members to withdraw" }, { status: 400 });
-  }
 
   const withdrawal = await prisma.withdrawalRequest.create({
     data: { userId, amount: parseFloat(amount), method, accountName, accountNumber },

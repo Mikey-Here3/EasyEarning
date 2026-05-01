@@ -124,7 +124,7 @@ export default function PlansPage() {
         ) : (
           <div className="stagger-children">
             {plans.map((plan, index) => (
-              <div key={plan.id} className="relative">
+              <div key={plan.id} id={plan.id} className="relative">
                 <PlanCard plan={plan} onBuy={handleBuyClick} featured={index === 1} />
                 {purchasing === plan.id && (
                   <div className="absolute inset-0 bg-white/60 backdrop-blur-sm rounded-[2rem] flex items-center justify-center z-10">

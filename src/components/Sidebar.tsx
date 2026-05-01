@@ -16,6 +16,7 @@ const navItems = [
   { label: "Withdraw", icon: "outbox", href: "/withdraw" },
   { label: "My Team", icon: "group", href: "/referral" },
   { label: "Active Plans", icon: "monitoring", href: "/active-plans" },
+  { label: "History", icon: "history", href: "/history" },
 ];
 
 export default function Sidebar({ open, onClose }: SidebarProps) {

@@ -50,7 +50,7 @@ export default function DashboardPage() {
     if (typeof window !== "undefined") window.location.href = "/api/auth/signin";
     return null;
   }
-  
+
   const { user, totalDeposits, totalWithdrawals } = data;
 
   return (
@@ -83,41 +83,60 @@ export default function DashboardPage() {
           </div>
         </section>
 
+        {/* Stats */}
+        <section className="grid grid-cols-2 gap-4">
+          <div className="bg-surface p-5 rounded-lg neu-convex flex flex-col">
+            <span className="material-symbols-outlined text-primary mb-2" style={{ fontVariationSettings: "'FILL' 1" }}>savings</span>
+            <span className="text-body-md text-on-surface-variant text-[12px]">Total Deposits</span>
+            <span className="text-headline-md text-on-surface mt-1">$ {totalDeposits.toLocaleString()}</span>
+          </div>
+          <div className="bg-surface p-5 rounded-lg neu-convex flex flex-col">
+            <span className="material-symbols-outlined text-secondary mb-2" style={{ fontVariationSettings: "'FILL' 1" }}>payments</span>
+            <span className="text-body-md text-on-surface-variant text-[12px]">Total Withdrawals</span>
+            <span className="text-headline-md text-on-surface mt-1">$ {totalWithdrawals.toLocaleString()}</span>
+          </div>
+        </section>
+
         {/* Active Plan Display */}
         {data.activePlans && data.activePlans.length > 0 && (
-          <section className="bg-surface p-5 rounded-lg neu-convex flex flex-col gap-3 border border-amber-200/30 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-amber-400/10 to-amber-600/10 rounded-bl-full pointer-events-none" />
-            <div className="flex justify-between items-start">
-              <h3 className="text-headline-md text-on-surface text-[16px] flex items-center gap-2">
-                <span className="material-symbols-outlined text-amber-500" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span>
-                Your Active Plan
-              </h3>
-              <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider flex items-center gap-1">
-                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse-dot" /> LIVE
-              </div>
-            </div>
-            {data.activePlans.slice(0, 1).map((up: any) => (
-              <div key={up.id} className="flex flex-col gap-2 z-10">
-                <div className="flex justify-between items-end">
-                  <span className="text-headline-lg text-slate-800">{up.plan.name}</span>
-                  <span className="text-body-md text-on-surface-variant font-medium">
-                    Daily: <span className="text-primary font-bold">${up.plan.dailyProfit}</span>
-                  </span>
+          <Link href="/active-plans" className="block relative group">
+            <section className="bg-surface p-5 rounded-lg neu-convex flex flex-col gap-3 border border-amber-200/30 relative overflow-hidden group-hover:scale-[1.02] transition-transform">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-amber-400/10 to-amber-600/10 rounded-bl-full pointer-events-none" />
+              <div className="flex justify-between items-start">
+                <h3 className="text-headline-md text-on-surface text-[16px] flex items-center gap-2">
+                  <span className="material-symbols-outlined text-amber-500" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span>
+                  Your Active Plan
+                </h3>
+                <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider flex items-center gap-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse-dot" /> LIVE
                 </div>
-                <div className="w-full h-2 rounded-full bg-neu-bg neu-concave-sm overflow-hidden mt-1">
-                  <div 
-                    className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-600" 
-                    style={{ 
-                      width: `${Math.min(100, Math.max(0, ((new Date().getTime() - new Date(up.activatedAt).getTime()) / (new Date(up.expiresAt).getTime() - new Date(up.activatedAt).getTime())) * 100))}%` 
-                    }} 
-                  />
-                </div>
-                <span className="text-[10px] text-on-surface-variant text-right">
-                  {Math.max(0, Math.ceil((new Date(up.expiresAt).getTime() - new Date().getTime()) / 86400000))} days left
-                </span>
               </div>
-            ))}
-          </section>
+              {data.activePlans.slice(0, 1).map((up: any) => (
+                <div key={up.id} className="flex flex-col gap-2 z-10">
+                  <div className="flex justify-between items-end">
+                    <span className="text-headline-lg text-slate-800">{up.plan.name}</span>
+                    <span className="text-body-md text-on-surface-variant font-medium">
+                      Daily: <span className="text-primary font-bold">${up.plan.dailyProfit}</span>
+                    </span>
+                  </div>
+                  <div className="w-full h-2 rounded-full bg-neu-bg neu-concave-sm overflow-hidden mt-1">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-600"
+                      style={{
+                        width: `${Math.min(100, Math.max(0, ((new Date().getTime() - new Date(up.activatedAt).getTime()) / (new Date(up.expiresAt).getTime() - new Date(up.activatedAt).getTime())) * 100))}%`
+                      }}
+                    />
+                  </div>
+                  <div className="flex justify-between items-center mt-1">
+                    <span className="text-[10px] text-primary font-bold uppercase tracking-wider">Click for details</span>
+                    <span className="text-[10px] text-on-surface-variant text-right">
+                      {Math.max(0, Math.ceil((new Date(up.expiresAt).getTime() - new Date().getTime()) / 86400000))} days left
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </section>
+          </Link>
         )}
 
         {/* Quick Actions */}
@@ -169,18 +188,7 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* Stats */}
-        <section className="grid grid-cols-2 gap-4 pb-4">
-          <div className="bg-surface p-5 rounded-lg neu-convex flex flex-col">
-            <span className="material-symbols-outlined text-primary mb-2" style={{ fontVariationSettings: "'FILL' 1" }}>savings</span>
-            <span className="text-body-md text-on-surface-variant text-[12px]">Total Deposits</span>
-            <span className="text-headline-md text-on-surface mt-1">$ {totalDeposits.toLocaleString()}</span>
-          </div>
-          <div className="bg-surface p-5 rounded-lg neu-convex flex flex-col">
-            <span className="material-symbols-outlined text-secondary mb-2" style={{ fontVariationSettings: "'FILL' 1" }}>payments</span>
-            <span className="text-body-md text-on-surface-variant text-[12px]">Total Withdrawals</span>
-          </div>
-        </section>
+
 
         {/* Available Plans */}
         {plans.length > 0 && (
@@ -209,11 +217,10 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <button onClick={() => {
-                      sessionStorage.setItem("selectedPlan", JSON.stringify(plan));
-                      window.location.href = "/deposit";
-                    }}
+                    window.location.href = `/plans#${plan.id}`;
+                  }}
                     className="w-full py-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-900 text-center text-label-caps font-bold active:scale-95 transition-all">
-                    Buy Now
+                    View Details
                   </button>
                 </div>
               ))}
@@ -227,7 +234,7 @@ export default function DashboardPage() {
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setShowIrs(false)}>
           <div className="relative max-w-sm w-full flex justify-center bg-white p-2 rounded-2xl" onClick={e => e.stopPropagation()}>
             <img src="/irs.jpeg" alt="IRS Registered" className="w-full h-auto rounded-xl" />
-            <button 
+            <button
               onClick={() => setShowIrs(false)}
               className="absolute -top-4 -right-4 w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center font-bold shadow-lg border-2 border-white"
             >

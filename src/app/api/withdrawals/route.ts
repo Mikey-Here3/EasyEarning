@@ -24,10 +24,15 @@ export async function POST(req: NextRequest) {
 
   const userId = (session.user as { id: string }).id;
   const { amount, method, accountName, accountNumber } = await req.json();
+  const withdrawalAmount = parseFloat(amount);
+
+  if (!withdrawalAmount || withdrawalAmount < 10) {
+    return NextResponse.json({ error: "Minimum withdrawal amount is $10" }, { status: 400 });
+  }
 
   // Check balance
   const user = await prisma.user.findUnique({ where: { id: userId } });
-  if (!user || user.balance < parseFloat(amount)) {
+  if (!user || user.balance < withdrawalAmount) {
     return NextResponse.json({ error: "Insufficient balance" }, { status: 400 });
   }
 
@@ -56,7 +61,7 @@ export async function POST(req: NextRequest) {
 
 
   const withdrawal = await prisma.withdrawalRequest.create({
-    data: { userId, amount: parseFloat(amount), method, accountName, accountNumber },
+    data: { userId, amount: withdrawalAmount, method, accountName, accountNumber },
   });
 
   return NextResponse.json(withdrawal);

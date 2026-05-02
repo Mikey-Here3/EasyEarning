@@ -60,9 +60,23 @@ export async function POST(req: NextRequest) {
 
 
 
-  const withdrawal = await prisma.withdrawalRequest.create({
-    data: { userId, amount: withdrawalAmount, method, accountName, accountNumber },
-  });
+  const [withdrawal] = await prisma.$transaction([
+    prisma.withdrawalRequest.create({
+      data: { userId, amount: withdrawalAmount, method, accountName, accountNumber },
+    }),
+    prisma.user.update({
+      where: { id: userId },
+      data: { balance: { decrement: withdrawalAmount } },
+    }),
+    prisma.transaction.create({
+      data: {
+        userId,
+        type: "WITHDRAWAL",
+        amount: -withdrawalAmount,
+        description: `Withdrawal Requested - $ ${withdrawalAmount}`,
+      },
+    }),
+  ]);
 
   return NextResponse.json(withdrawal);
 }

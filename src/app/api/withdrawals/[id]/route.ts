@@ -17,19 +17,24 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     data: { status, adminNote },
   });
 
-  if (status === "APPROVED") {
+  if (status === "REJECTED") {
+    // Refund the balance if rejected, since it was already deducted on request
     await prisma.user.update({
       where: { id: withdrawal.userId },
-      data: { balance: { decrement: withdrawal.amount } },
+      data: { balance: { increment: withdrawal.amount } },
     });
     await prisma.transaction.create({
       data: {
         userId: withdrawal.userId,
-        type: "WITHDRAWAL",
-        amount: -withdrawal.amount,
-        description: `Withdrawal approved - $ ${withdrawal.amount}`,
+        type: "REFUND",
+        amount: withdrawal.amount,
+        description: `Withdrawal Rejected - Refunded $ ${withdrawal.amount}`,
       },
     });
+  } else if (status === "APPROVED") {
+    // Note: It's already deducted on request, we just optionally add an informational transaction or do nothing.
+    // We already recorded "Withdrawal Requested" when it was created.
+    // If you want to update the transaction, you'd need to find it, but leaving as is is fine.
   }
 
   return NextResponse.json(withdrawal);

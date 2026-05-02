@@ -56,7 +56,7 @@ export default function AdminMessagePopup() {
     }
   };
 
-  if (loading || messages.length === 0) return null;
+  if (loading || messages.length === 0 || (session?.user as any)?.role === "ADMIN") return null;
 
   const currentMessage = messages[currentMessageIndex];
 

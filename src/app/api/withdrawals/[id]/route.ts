@@ -26,7 +26,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     await prisma.transaction.create({
       data: {
         userId: withdrawal.userId,
-        type: "BONUS",
+        type: "REFUND",
         amount: withdrawal.amount,
         description: `Withdrawal Rejected - Refunded $ ${withdrawal.amount}`,
       },

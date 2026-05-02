@@ -42,12 +42,6 @@ export async function GET() {
     orderBy: { createdAt: "desc" }
   });
 
-  const adminMessages = await prisma.adminMessage.findMany({
-    where: { userId, isRead: false },
-    select: { id: true, title: true, message: true, type: true },
-    orderBy: { createdAt: "desc" }
-  });
-
   return NextResponse.json({
     user: { id: user.id, name: user.name, email: user.email, refCode: user.refCode, balance: user.balance, role: user.role },
     totalDeposits: totalDeposits._sum.amount || 0,
@@ -58,6 +52,5 @@ export async function GET() {
     teamMembers,
     totalCommission: totalCommission._sum.commission || 0,
     pendingBonuses,
-    adminMessages,
   });
 }

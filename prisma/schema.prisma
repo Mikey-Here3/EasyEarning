@@ -37,6 +37,7 @@ enum TransactionType {
   COMMISSION
   PLAN_PURCHASE
   PENALTY
+  REFUND
 }
 
 enum PlanStatus {

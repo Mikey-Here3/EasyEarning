@@ -26,8 +26,8 @@ export async function POST(req: NextRequest) {
   const { amount, method, accountName, accountNumber } = await req.json();
   const withdrawalAmount = parseFloat(amount);
 
-  if (!withdrawalAmount || withdrawalAmount < 10) {
-    return NextResponse.json({ error: "Minimum withdrawal amount is $10" }, { status: 400 });
+  if (!withdrawalAmount || withdrawalAmount < 20) {
+    return NextResponse.json({ error: "Minimum withdrawal amount is $20" }, { status: 400 });
   }
 
   // Check balance

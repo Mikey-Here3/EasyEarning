@@ -13,7 +13,6 @@ export default function AdminPlansPage() {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ name: "", badge: "", price: "", dailyProfit: "", validity: "", totalProfit: "", refBonus: "" });
   const [saving, setSaving] = useState(false);
-
   const [editingPlanId, setEditingPlanId] = useState<string | null>(null);
 
   const load = () => fetch("/api/plans").then(r => r.json()).then(setPlans).finally(() => setLoading(false));
@@ -24,7 +23,6 @@ export default function AdminPlansPage() {
     setSaving(true);
     const url = editingPlanId ? `/api/plans/${editingPlanId}` : "/api/plans";
     const method = editingPlanId ? "PUT" : "POST";
-    
     await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
@@ -34,21 +32,14 @@ export default function AdminPlansPage() {
         validity: parseInt(form.validity), totalProfit: parseFloat(form.totalProfit), refBonus: parseFloat(form.refBonus),
       }),
     });
-    setSaving(false);
-    setShowForm(false);
-    setEditingPlanId(null);
+    setSaving(false); setShowForm(false); setEditingPlanId(null);
     setForm({ name: "", badge: "", price: "", dailyProfit: "", validity: "", totalProfit: "", refBonus: "" });
     load();
   };
 
   const handleEdit = (p: Plan) => {
-    setForm({
-      name: p.name, badge: p.badge, price: p.price.toString(),
-      dailyProfit: p.dailyProfit.toString(), validity: p.validity.toString(),
-      totalProfit: p.totalProfit.toString(), refBonus: p.refBonus.toString()
-    });
-    setEditingPlanId(p.id);
-    setShowForm(true);
+    setForm({ name: p.name, badge: p.badge, price: p.price.toString(), dailyProfit: p.dailyProfit.toString(), validity: p.validity.toString(), totalProfit: p.totalProfit.toString(), refBonus: p.refBonus.toString() });
+    setEditingPlanId(p.id); setShowForm(true);
   };
 
   const deletePlan = async (id: string) => {
@@ -58,27 +49,21 @@ export default function AdminPlansPage() {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold text-white">Plan Management</h1>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white">Plan Management</h1>
         <button onClick={() => {
-          if (showForm) {
-            setShowForm(false);
-            setEditingPlanId(null);
-            setForm({ name: "", badge: "", price: "", dailyProfit: "", validity: "", totalProfit: "", refBonus: "" });
-          } else {
-            setShowForm(true);
-          }
-        }}
-          className="bg-amber-500 text-slate-900 px-6 py-3 rounded-xl font-bold text-sm hover:bg-amber-400 transition-colors flex items-center gap-2">
+          if (showForm) { setShowForm(false); setEditingPlanId(null); setForm({ name: "", badge: "", price: "", dailyProfit: "", validity: "", totalProfit: "", refBonus: "" }); }
+          else { setShowForm(true); }
+        }} className="bg-amber-500 text-slate-900 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl font-bold text-sm hover:bg-amber-400 transition-colors flex items-center gap-2 self-start sm:self-auto">
           <span className="material-symbols-outlined text-[18px]">{showForm ? "close" : "add"}</span>{showForm ? "Cancel" : "Add Plan"}
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-slate-800 border border-slate-700 rounded-2xl p-6 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="col-span-1 md:col-span-2 flex justify-between items-center mb-2">
-            <h2 className="text-xl font-bold text-white">{editingPlanId ? "Edit Plan" : "Create New Plan"}</h2>
+        <form onSubmit={handleSubmit} className="bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="col-span-1 lg:col-span-2 mb-2">
+            <h2 className="text-lg sm:text-xl font-bold text-white">{editingPlanId ? "Edit Plan" : "Create New Plan"}</h2>
           </div>
           {[
             { key: "name", label: "Plan Name", placeholder: "Pak-01", type: "text" },
@@ -96,8 +81,8 @@ export default function AdminPlansPage() {
                 className="bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white text-sm focus:ring-2 focus:ring-amber-500 outline-none" />
             </div>
           ))}
-          <div className="col-span-1 md:col-span-2 mt-4">
-            <button type="submit" disabled={saving} className="bg-amber-500 text-slate-900 px-8 py-3 rounded-xl font-bold text-sm hover:bg-amber-400 disabled:opacity-50">
+          <div className="col-span-1 lg:col-span-2 mt-2">
+            <button type="submit" disabled={saving} className="bg-amber-500 text-slate-900 px-8 py-3 rounded-xl font-bold text-sm hover:bg-amber-400 disabled:opacity-50 w-full lg:w-auto">
               {saving ? "Saving..." : editingPlanId ? "Update Plan" : "Create Plan"}
             </button>
           </div>
@@ -105,22 +90,22 @@ export default function AdminPlansPage() {
       )}
 
       {loading ? <div className="text-slate-400">Loading...</div> : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {plans.map((p) => (
-            <div key={p.id} className="bg-slate-800 border border-slate-700 rounded-2xl p-6 hover:border-slate-600 transition-colors">
+            <div key={p.id} className="bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-6 hover:border-slate-600 transition-colors">
               <div className="flex justify-between items-start mb-4">
-                <div><h3 className="text-xl font-bold text-white">{p.name}</h3><span className="text-xs text-amber-400 font-bold uppercase">{p.badge}</span></div>
-                <div className="flex gap-2">
+                <div><h3 className="text-lg sm:text-xl font-bold text-white">{p.name}</h3><span className="text-xs text-amber-400 font-bold uppercase">{p.badge}</span></div>
+                <div className="flex gap-1">
                   <button onClick={() => handleEdit(p)} className="text-blue-400 hover:text-blue-300 p-2"><span className="material-symbols-outlined text-[18px]">edit</span></button>
                   <button onClick={() => deletePlan(p.id)} className="text-red-400 hover:text-red-300 p-2"><span className="material-symbols-outlined text-[18px]">delete</span></button>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div><span className="text-slate-400">Price</span><p className="text-white font-semibold">$ {p.price.toLocaleString()}</p></div>
-                <div><span className="text-slate-400">Daily</span><p className="text-white font-semibold">$ {p.dailyProfit}</p></div>
-                <div><span className="text-slate-400">Validity</span><p className="text-white font-semibold">{p.validity} days</p></div>
-                <div><span className="text-slate-400">Total</span><p className="text-white font-semibold">$ {p.totalProfit.toLocaleString()}</p></div>
-                <div><span className="text-slate-400">Ref Bonus</span><p className="text-white font-semibold">{p.refBonus}%</p></div>
+                <div><span className="text-slate-400 text-xs">Price</span><p className="text-white font-semibold">$ {p.price.toLocaleString()}</p></div>
+                <div><span className="text-slate-400 text-xs">Daily</span><p className="text-white font-semibold">$ {p.dailyProfit}</p></div>
+                <div><span className="text-slate-400 text-xs">Validity</span><p className="text-white font-semibold">{p.validity} days</p></div>
+                <div><span className="text-slate-400 text-xs">Total</span><p className="text-white font-semibold">$ {p.totalProfit.toLocaleString()}</p></div>
+                <div><span className="text-slate-400 text-xs">Ref Bonus</span><p className="text-white font-semibold">{p.refBonus}%</p></div>
               </div>
             </div>
           ))}

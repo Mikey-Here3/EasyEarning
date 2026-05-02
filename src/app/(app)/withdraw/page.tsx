@@ -40,7 +40,7 @@ export default function WithdrawPage() {
 
   const handleWithdrawClick = () => {
     const num = parseFloat(amount);
-    if (!num || num < 10 || num > balance || !accountNumber) return;
+    if (!num || num < 20 || num > balance || !accountNumber) return;
     
     setDialog({
       isOpen: true,
@@ -120,10 +120,16 @@ export default function WithdrawPage() {
                 className="w-full bg-neu-bg rounded-xl py-4 px-4 text-body-lg neu-concave focus:ring-2 focus:ring-primary-container outline-none" />
             </div>
             <div className="space-y-2"><label className="text-label-caps text-on-surface ml-2">Amount (USDT)</label>
-              <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Min $ 10"
-                className="w-full bg-neu-bg rounded-xl py-4 px-4 text-body-lg neu-concave focus:ring-2 focus:ring-primary-container outline-none" />
+              <div className="grid grid-cols-4 gap-2">
+                {[20, 50, 100, 250, 500, 800, 1000].map((amt) => (
+                  <button key={amt} onClick={() => setAmount(amt.toString())}
+                    className={`py-3 rounded-xl font-bold text-sm transition-all ${amount === amt.toString() ? "bg-amber-500 text-slate-900 shadow-lg" : "bg-neu-bg text-on-surface neu-convex"}`}>
+                    ${amt}
+                  </button>
+                ))}
+              </div>
             </div>
-            <button onClick={handleWithdrawClick} disabled={!amount || parseFloat(amount) < 10 || !accountNumber || loading}
+            <button onClick={handleWithdrawClick} disabled={!amount || parseFloat(amount) < 20 || !accountNumber || loading}
               className="w-full py-4 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-900 font-bold uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50 mt-4"
               style={{ boxShadow: "5px 5px 15px #D1D9E6, -5px -5px 15px #FFFFFF" }}>
               {loading ? "Processing..." : "Request Withdrawal"}
@@ -136,7 +142,7 @@ export default function WithdrawPage() {
             <span className="material-symbols-outlined text-secondary text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>info</span>Important Notes
           </h3>
           <ul className="text-body-md text-on-surface-variant space-y-2 pl-2">
-            <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Minimum withdrawal: $ 10</li>
+            <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Minimum withdrawal: $ 20</li>
             <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Processing within 24 hours</li>
             <li className="flex items-start gap-2"><span className="text-primary mt-1">•</span>Must have bought a plan at least once (within 60 days)</li>
             <li className="flex items-start gap-2 text-red-500 font-bold uppercase"><span className="text-red-500 mt-1">•</span>Uploads must be a clear showcase of time and sent amount</li>

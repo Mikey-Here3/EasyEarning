@@ -19,6 +19,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       withdrawals: { orderBy: { createdAt: "desc" }, take: 10 },
       userPlans: { include: { plan: true }, orderBy: { createdAt: "desc" } },
       transactions: { orderBy: { createdAt: "desc" }, take: 20 },
+      bonusRequests: { orderBy: { createdAt: "desc" } },
     },
   });
   return NextResponse.json(user);

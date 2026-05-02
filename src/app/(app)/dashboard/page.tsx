@@ -18,6 +18,7 @@ interface DashboardData {
   teamMembers: number;
   totalCommission: number;
   pendingBonuses?: { id: string; amount: number; description: string }[];
+  adminMessages?: { id: string; title: string; message: string; type: string }[];
 }
 
 export default function DashboardPage() {
@@ -44,6 +45,18 @@ export default function DashboardPage() {
       fetch("/api/dashboard").then(r => r.json()).then(setData);
     } else {
       toast.error("Failed to process bonus");
+    }
+  };
+
+  const handleDismissMessage = async (id: string) => {
+    // Optimistically update the UI
+    setData(prev => prev ? { ...prev, adminMessages: prev.adminMessages?.filter(m => m.id !== id) } : prev);
+    
+    // API Call
+    try {
+      await fetch(`/api/admin-messages/${id}`, { method: "PUT" });
+    } catch (e) {
+      console.error("Failed to dismiss message", e);
     }
   };
 
@@ -100,6 +113,38 @@ export default function DashboardPage() {
                 </div>
               </div>
             ))}
+          </section>
+        )}
+
+        {/* Admin Messages Banner */}
+        {data.adminMessages && data.adminMessages.length > 0 && (
+          <section className="flex flex-col gap-3">
+            {data.adminMessages.map(msg => {
+              let icon = "notifications";
+              let color = "text-blue-500";
+              let bg = "bg-blue-500/10";
+              let border = "border-blue-500/30";
+              if (msg.type === "WARNING") { icon = "warning"; color = "text-amber-500"; bg = "bg-amber-500/10"; border = "border-amber-500/30"; }
+              if (msg.type === "GOOD_PERFORMANCE") { icon = "star"; color = "text-green-500"; bg = "bg-green-500/10"; border = "border-green-500/30"; }
+              if (msg.type === "INCOMPLETE_PAYMENT" || msg.type === "BAD_ACTIVITY") { icon = "gavel"; color = "text-red-500"; bg = "bg-red-500/10"; border = "border-red-500/30"; }
+
+              return (
+                <div key={msg.id} className={`rounded-lg p-5 border shadow-lg relative overflow-hidden flex flex-col gap-3 ${bg} ${border}`}>
+                  <div className="flex justify-between items-start">
+                    <h3 className={`font-bold text-lg flex items-center gap-2 ${color}`}>
+                      <span className="material-symbols-outlined">{icon}</span>
+                      {msg.title}
+                    </h3>
+                    <button onClick={() => handleDismissMessage(msg.id)} className="text-slate-400 hover:text-white transition-colors bg-slate-800/50 w-8 h-8 rounded-full flex items-center justify-center">
+                      <span className="material-symbols-outlined text-[18px]">close</span>
+                    </button>
+                  </div>
+                  <div className="bg-slate-800/40 p-3 rounded-lg text-slate-200 text-sm whitespace-pre-wrap leading-relaxed">
+                    {msg.message}
+                  </div>
+                </div>
+              );
+            })}
           </section>
         )}
 

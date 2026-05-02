@@ -2,7 +2,6 @@
 
 import { useState, createContext, useContext, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
-import AdminMessagePopup from "@/components/AdminMessagePopup";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { Toaster } from "react-hot-toast";
@@ -37,7 +36,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           style: { background: '#334155', color: '#fff', borderRadius: '12px' },
           success: { iconTheme: { primary: '#10b981', secondary: '#fff' } },
         }} />
-        <AdminMessagePopup />
       </div>
     </SidebarContext.Provider>
   );

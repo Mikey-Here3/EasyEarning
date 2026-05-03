@@ -2,15 +2,31 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { processUserPlans, calculatePlanMetrics } from "@/lib/plan-utils";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const userId = (session.user as { id: string }).id;
+  console.log(`Dashboard hit for user: ${userId}`);
 
+  // Process plans before returning dashboard data
+  try {
+    console.log(`Processing plans for ${userId}...`);
+    await processUserPlans(userId);
+    console.log(`Plans processed for ${userId}`);
+  } catch (error) {
+    console.error("Error processing plans in dashboard route:", error);
+  }
+
+  console.log(`Fetching user data for ${userId}...`);
   const user = await prisma.user.findUnique({ where: { id: userId } });
-  if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
+  if (!user) {
+    console.warn(`User ${userId} not found in database`);
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
+  console.log(`User data fetched for ${userId}`);
 
   const totalDeposits = await prisma.depositRequest.aggregate({
     where: { userId, status: "APPROVED" },
@@ -22,10 +38,15 @@ export async function GET() {
     _sum: { amount: true },
   });
 
-  const activePlans = await prisma.userPlan.findMany({
+  const userPlans = await prisma.userPlan.findMany({
     where: { userId, status: "ACTIVE" },
     include: { plan: true },
   });
+
+  const activePlans = userPlans.map(up => ({
+    ...up,
+    ...calculatePlanMetrics(up)
+  }));
 
   const hasDeposited = (await prisma.depositRequest.count({ where: { userId, status: "APPROVED" } })) > 0;
   const hasActivePlan = activePlans.length > 0;

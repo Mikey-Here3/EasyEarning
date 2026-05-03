@@ -45,6 +45,7 @@ enum PlanStatus {
   ACTIVE
   COMPLETED
   EXPIRED
+  CANCELLED
 }
 
 model User {
@@ -95,6 +96,7 @@ model UserPlan {
   status      PlanStatus @default(PENDING)
   activatedAt DateTime?
   expiresAt   DateTime?
+  lastPayoutAt DateTime?
   createdAt   DateTime   @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

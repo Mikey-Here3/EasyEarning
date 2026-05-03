@@ -7,7 +7,7 @@ interface AdminMessage {
   id: string; title: string; message: string; type: string; isRead: boolean;
 }
 
-export default function AdminMessagePopup() {
+export default function AdminMessagePopup({ inline = false }: { inline?: boolean }) {
   const { data: session } = useSession();
   const [messages, setMessages] = useState<AdminMessage[]>([]);
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
@@ -72,43 +72,49 @@ export default function AdminMessagePopup() {
 
   const style = getIconAndColors(currentMessage.type);
 
+  const content = (
+    <section className={`bg-gradient-to-br ${style.gradient} rounded-lg p-5 shadow-2xl relative overflow-hidden flex flex-col gap-3 animate-in slide-in-from-bottom-5 fade-in duration-300`}>
+      <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-bl-full pointer-events-none" />
+      
+      <h3 className="text-white font-bold text-lg flex items-center gap-2 relative z-10">
+        <span className="material-symbols-outlined">{style.icon}</span>
+        {currentMessage.title}
+      </h3>
+      
+      <div className="bg-white/20 p-3 rounded-lg flex flex-col gap-2 relative z-10">
+        <p className="text-white text-sm font-medium whitespace-pre-wrap">
+          {currentMessage.message}
+        </p>
+        
+        {messages.length > 1 && (
+          <div className="text-xs text-white/70 font-medium">
+            Message {currentMessageIndex + 1} of {messages.length}
+          </div>
+        )}
+
+        <div className="flex justify-end mt-2">
+          <button
+            onClick={handleMarkAsRead}
+            disabled={markingRead}
+            className="bg-slate-900 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-slate-800 transition-colors disabled:opacity-50 flex items-center gap-2"
+          >
+            {markingRead ? (
+              <span className="material-symbols-outlined animate-spin text-[16px]">sync</span>
+            ) : (
+              <span className="material-symbols-outlined text-[16px]">check</span>
+            )}
+            {markingRead ? "Processing..." : "Dismiss"}
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+
+  if (inline) return content;
+
   return (
     <div className="fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-[360px] z-[90]">
-      <section className={`bg-gradient-to-br ${style.gradient} rounded-lg p-5 shadow-2xl relative overflow-hidden flex flex-col gap-3 animate-in slide-in-from-bottom-5 fade-in duration-300`}>
-        <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-bl-full pointer-events-none" />
-        
-        <h3 className="text-white font-bold text-lg flex items-center gap-2 relative z-10">
-          <span className="material-symbols-outlined">{style.icon}</span>
-          {currentMessage.title}
-        </h3>
-        
-        <div className="bg-white/20 p-3 rounded-lg flex flex-col gap-2 relative z-10">
-          <p className="text-white text-sm font-medium whitespace-pre-wrap">
-            {currentMessage.message}
-          </p>
-          
-          {messages.length > 1 && (
-            <div className="text-xs text-white/70 font-medium">
-              Message {currentMessageIndex + 1} of {messages.length}
-            </div>
-          )}
-
-          <div className="flex justify-end mt-2">
-            <button
-              onClick={handleMarkAsRead}
-              disabled={markingRead}
-              className="bg-slate-900 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-slate-800 transition-colors disabled:opacity-50 flex items-center gap-2"
-            >
-              {markingRead ? (
-                <span className="material-symbols-outlined animate-spin text-[16px]">sync</span>
-              ) : (
-                <span className="material-symbols-outlined text-[16px]">check</span>
-              )}
-              {markingRead ? "Processing..." : "Dismiss"}
-            </button>
-          </div>
-        </div>
-      </section>
+      {content}
     </div>
   );
 }

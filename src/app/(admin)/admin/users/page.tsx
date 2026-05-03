@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 
 interface User {
   id: string; name: string; email: string; phone: string | null;
@@ -92,6 +93,7 @@ export default function AdminUsersPage() {
     setMessageTitle("");
     setMessageText("");
     setMessageType("CUSTOM");
+    toast.success("Message sent successfully!");
   };
 
   const quickMessagePresets = [

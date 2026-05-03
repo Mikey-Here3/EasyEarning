@@ -11,6 +11,10 @@ interface ActivePlan {
   status: string;
   activatedAt: string;
   expiresAt: string;
+  earnedProfit: number;
+  remainingProfit: number;
+  daysCompleted: number;
+  daysRemaining: number;
   plan: { name: string; badge: string; price: number; dailyProfit: number; totalProfit: number; validity: number };
 }
 
@@ -43,13 +47,7 @@ export default function ActivePlansPage() {
         ) : (
           <div className="flex flex-col gap-6 stagger-children">
             {plans.map((up) => {
-              const activated = new Date(up.activatedAt);
-              const expires = new Date(up.expiresAt);
-              const now = new Date();
-              const total = expires.getTime() - activated.getTime();
-              const elapsed = now.getTime() - activated.getTime();
-              const progress = Math.min(Math.max((elapsed / total) * 100, 0), 100);
-              const daysLeft = Math.max(0, Math.ceil((expires.getTime() - now.getTime()) / 86400000));
+              const progress = Math.min(Math.max((up.daysCompleted / up.plan.validity) * 100, 0), 100);
               return (
                 <div key={up.id} className="bg-neu-bg rounded-[2rem] p-6 neu-convex-lg border border-amber-200/50">
                   <div className="flex justify-between items-start mb-4">
@@ -59,15 +57,15 @@ export default function ActivePlansPage() {
                     </div>
                   </div>
                   <div className="mb-4">
-                    <div className="flex justify-between text-body-md text-slate-600 mb-2"><span>Progress</span><span>{daysLeft} days left</span></div>
+                    <div className="flex justify-between text-body-md text-slate-600 mb-2"><span>Progress</span><span>{up.daysRemaining} days left</span></div>
                     <div className="w-full h-3 rounded-full bg-neu-bg neu-concave-sm overflow-hidden">
                       <div className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-600 transition-all duration-500" style={{ width: `${progress}%` }} />
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-3">
-                    <div className="flex flex-col items-center p-2 rounded-xl bg-neu-bg neu-concave-sm"><span className="text-[10px] text-slate-500 font-bold uppercase">Daily</span><span className="text-body-lg font-semibold text-slate-800">$ {up.plan.dailyProfit}</span></div>
-                    <div className="flex flex-col items-center p-2 rounded-xl bg-neu-bg neu-concave-sm"><span className="text-[10px] text-slate-500 font-bold uppercase">Total</span><span className="text-body-lg font-semibold text-slate-800">$ {up.plan.totalProfit}</span></div>
-                    <div className="flex flex-col items-center p-2 rounded-xl bg-neu-bg neu-concave-sm"><span className="text-[10px] text-slate-500 font-bold uppercase">Invested</span><span className="text-body-lg font-semibold text-slate-800">$ {up.plan.price}</span></div>
+                    <div className="flex flex-col items-center p-2 rounded-xl bg-neu-bg neu-concave-sm"><span className="text-[10px] text-slate-500 font-bold uppercase">Earned</span><span className="text-body-lg font-semibold text-green-600">$ {up.earnedProfit}</span></div>
+                    <div className="flex flex-col items-center p-2 rounded-xl bg-neu-bg neu-concave-sm"><span className="text-[10px] text-slate-500 font-bold uppercase">Left</span><span className="text-body-lg font-semibold text-amber-600">$ {up.remainingProfit}</span></div>
+                    <div className="flex flex-col items-center p-2 rounded-xl bg-neu-bg neu-concave-sm"><span className="text-[10px] text-slate-500 font-bold uppercase">Completed</span><span className="text-body-lg font-semibold text-slate-800">{up.daysCompleted} d</span></div>
                   </div>
                 </div>
               );

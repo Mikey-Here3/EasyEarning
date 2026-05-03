@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { Toaster } from "react-hot-toast";
 
 import { useState } from "react";
 
@@ -72,7 +73,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main */}
-      <main className="flex-1 lg:ml-64 p-4 md:p-8 pt-20 lg:pt-8 min-h-screen max-w-full overflow-x-hidden">{children}</main>
+      <main className="flex-1 lg:ml-64 p-4 md:p-8 pt-20 lg:pt-8 min-h-screen max-w-full overflow-x-hidden">
+        <Toaster position="top-right" toastOptions={{ 
+          style: { background: '#1e293b', color: '#fff', borderRadius: '12px' },
+          success: { iconTheme: { primary: '#fbbf24', secondary: '#1e293b' } },
+        }} />
+        {children}
+      </main>
     </div>
   );
 }

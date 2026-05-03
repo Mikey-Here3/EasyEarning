@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
+import AdminMessagePopup from "@/components/AdminMessagePopup";
 import BottomNav from "@/components/BottomNav";
 import LiveTicker from "@/components/LiveTicker";
 import { useSidebar } from "../layout";
@@ -75,6 +76,8 @@ export default function DashboardPage() {
       <Header onMenuClick={open} />
       <div className="pt-16"><LiveTicker /></div>
       <main className="pt-4 px-6 flex flex-col gap-6 pb-28 stagger-children">
+        
+        <AdminMessagePopup inline={true} />
         
         {/* Pending Bonuses Banner */}
         {data.pendingBonuses && data.pendingBonuses.length > 0 && (
@@ -173,25 +176,38 @@ export default function DashboardPage() {
                 </div>
               </div>
               {data.activePlans.slice(0, 1).map((up: any) => (
-                <div key={up.id} className="flex flex-col gap-2 z-10">
+                <div key={up.id} className="flex flex-col gap-3 z-10">
                   <div className="flex justify-between items-end">
                     <span className="text-headline-lg text-slate-800">{up.plan.name}</span>
-                    <span className="text-body-md text-on-surface-variant font-medium">
-                      Daily: <span className="text-primary font-bold">${up.plan.dailyProfit}</span>
-                    </span>
+                    <div className="flex flex-col items-end">
+                      <span className="text-label-caps text-on-surface-variant opacity-70">Earned</span>
+                      <span className="text-body-lg text-green-600 font-bold">${up.earnedProfit}</span>
+                    </div>
                   </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 py-1 border-y border-amber-100/30">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] text-on-surface-variant uppercase tracking-wider">Remaining</span>
+                      <span className="text-body-md font-bold text-amber-700">${up.remainingProfit}</span>
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <span className="text-[10px] text-on-surface-variant uppercase tracking-wider">Completed</span>
+                      <span className="text-body-md font-bold text-slate-700">{up.daysCompleted} / {up.plan.validity} Days</span>
+                    </div>
+                  </div>
+
                   <div className="w-full h-2 rounded-full bg-neu-bg neu-concave-sm overflow-hidden mt-1">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-600"
                       style={{
-                        width: `${Math.min(100, Math.max(0, ((new Date().getTime() - new Date(up.activatedAt).getTime()) / (new Date(up.expiresAt).getTime() - new Date(up.activatedAt).getTime())) * 100))}%`
+                        width: `${Math.min(100, Math.max(0, (up.daysCompleted / up.plan.validity) * 100))}%`
                       }}
                     />
                   </div>
                   <div className="flex justify-between items-center mt-1">
                     <span className="text-[10px] text-primary font-bold uppercase tracking-wider">Click for details</span>
                     <span className="text-[10px] text-on-surface-variant text-right">
-                      {Math.max(0, Math.ceil((new Date(up.expiresAt).getTime() - new Date().getTime()) / 86400000))} days left
+                      {up.daysRemaining} days left
                     </span>
                   </div>
                 </div>

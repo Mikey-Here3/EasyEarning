@@ -3,8 +3,11 @@
 import { useState, useEffect } from "react";
 
 interface UserPlan {
-  id: string; status: string; createdAt: string; dailyProfit: number;
-  totalProfit: number; expiresAt: string;
+  id: string; status: string; createdAt: string; 
+  dailyProfit: number; totalProfit: number; 
+  earnedProfit: number; remainingProfit: number; 
+  daysCompleted: number; daysRemaining: number;
+  expiresAt: string;
   user: { name: string; email: string; balance: number; refCode: string };
   plan: { name: string; badge: string; price: number };
 }
@@ -20,6 +23,18 @@ export default function AdminActivePlansPage() {
   }).finally(() => setLoading(false));
 
   useEffect(() => { load(); }, []);
+
+  const handleRevoke = async (id: string) => {
+    if (!confirm("Are you sure you want to revoke this plan? The user will stop receiving profit.")) return;
+    try {
+      const res = await fetch(`/api/admin/active-plans/${id}/revoke`, { method: "PATCH" });
+      const data = await res.json();
+      if (data.error) alert(data.error);
+      else load();
+    } catch (err) {
+      alert("Failed to revoke");
+    }
+  };
 
   const filtered = activePlans.filter(p => {
     const matchesFilter = filter === "ALL" || p.status === filter;
@@ -71,15 +86,27 @@ export default function AdminActivePlansPage() {
                 </div>
                 <span className={`px-2 sm:px-3 py-1 rounded-lg text-[10px] sm:text-xs font-bold uppercase flex-shrink-0 ml-2 ${statusColors[up.status] || "bg-slate-500/20 text-slate-400"}`}>{up.status}</span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-sm mb-3 sm:mb-4">
-                <div><span className="text-slate-400 text-xs block">Plan</span><p className="text-amber-400 font-bold text-base sm:text-lg">{up.plan.name}</p></div>
-                <div><span className="text-slate-400 text-xs block">Price</span><p className="text-white text-sm">$ {up.plan.price}</p></div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4 text-sm mb-3 sm:mb-4">
+                <div><span className="text-slate-400 text-xs block">Plan</span><p className="text-amber-400 font-bold text-base">{up.plan.name}</p></div>
                 <div><span className="text-slate-400 text-xs block">Daily Return</span><p className="text-white text-sm">$ {up.dailyProfit}</p></div>
+                <div><span className="text-slate-400 text-xs block">Earned</span><p className="text-green-400 font-bold text-sm">$ {up.earnedProfit}</p></div>
+                <div><span className="text-slate-400 text-xs block">Remaining</span><p className="text-blue-400 font-bold text-sm">$ {up.remainingProfit}</p></div>
                 <div><span className="text-slate-400 text-xs block">Max Total</span><p className="text-white text-sm">$ {up.totalProfit}</p></div>
+                <div><span className="text-slate-400 text-xs block">Days Comp.</span><p className="text-white text-sm">{up.daysCompleted} days</p></div>
               </div>
               <div className="flex items-center justify-between gap-2 border-t border-slate-700 pt-3 mt-3">
-                <span className="text-xs text-slate-500">Started: {new Date(up.createdAt).toLocaleDateString()}</span>
-                <span className="text-xs text-slate-500">Expires: {new Date(up.expiresAt).toLocaleDateString()}</span>
+                <div className="flex flex-col sm:flex-row sm:gap-4">
+                  <span className="text-xs text-slate-500">Started: {new Date(up.createdAt).toLocaleDateString()}</span>
+                  <span className="text-xs text-slate-500">Expires: {new Date(up.expiresAt).toLocaleDateString()}</span>
+                </div>
+                {up.status === "ACTIVE" && (
+                  <button 
+                    onClick={() => handleRevoke(up.id)}
+                    className="px-3 py-1 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white rounded-lg text-[10px] font-bold uppercase transition-all"
+                  >
+                    Revoke Plan
+                  </button>
+                )}
               </div>
             </div>
           ))}
